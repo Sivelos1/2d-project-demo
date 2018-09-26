@@ -11,6 +11,9 @@ public class PlayerCharacter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (Input.GetKey("Z"))
+        {
+            Debug.Log("nice!");
+        }
 	}
 }
