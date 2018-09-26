@@ -20,6 +20,9 @@ public class PlayerCharacter : MonoBehaviour {
     private Rigidbody2D rigidBody2DInstance;
     private BoxCollider2D collision;
 
+    private float horizontalInput;
+    private float verticalInput;
+
 
     // Use this for initialization
     private void Start () {
@@ -33,17 +36,19 @@ public class PlayerCharacter : MonoBehaviour {
 	// Update is called once per frame
 	private void Update () {
 
-        if (Input.GetButton("Jump"))
-        {
-            Move(0, 5);
-        }
+        GetInput();
+        Move();
     }
 
-    private void Move(float changeToX, float changeToY)
+    private void GetInput()
     {
-        float x = rigidBody2DInstance.velocity.x;
-        float y = rigidBody2DInstance.velocity.y;
-        rigidBody2DInstance.velocity = new Vector2(x + changeToX, y + changeToY);
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+}
+
+    private void Move()
+    {
+        rigidBody2DInstance.velocity = new Vector2(horizontalInput, 0);
     }
 
 }
