@@ -246,6 +246,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d88a059ca6c0f7042a9399bb8ba7b9d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lives: 3
+  name: Mario
+  jumpHeight: 5
+  speed: 5
+  isOnGround: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

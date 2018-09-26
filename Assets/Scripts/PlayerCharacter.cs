@@ -3,17 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour {
+    [SerializeField]
+    private int lives = 3;
 
-	// Use this for initialization
-	void Start () {
-            Debug.Log("dude fuckin stellar lol");
-	}
+    [SerializeField]
+    private string name = "Mario";
+
+    [SerializeField]
+    private float jumpHeight = 5, speed = 5;
+
+    private bool jumping;
+
+    [SerializeField]
+    private bool isOnGround;
+
+    private Rigidbody2D rigidBody2DInstance;
+    private BoxCollider2D collision;
+
+
+    // Use this for initialization
+    private void Start () {
+        rigidBody2DInstance = GetComponent<Rigidbody2D>();
+        collision = GetComponent<BoxCollider2D>();
+        Debug.Log("dude fuckin stellar lol");
+
+
+    }
 	
 	// Update is called once per frame
-	void Update () {
-        if (Input.GetKey("Z"))
+	private void Update () {
+
+        if (Input.GetButton("Jump"))
         {
-            Debug.Log("nice!");
+            Move(0, 5);
         }
-	}
+    }
+
+    private void Move(float changeToX, float changeToY)
+    {
+        float x = rigidBody2DInstance.velocity.x;
+        float y = rigidBody2DInstance.velocity.y;
+        rigidBody2DInstance.velocity = new Vector2(x + changeToX, y + changeToY);
+    }
+
 }
