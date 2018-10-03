@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 294546490}
   - component: {fileID: 294546493}
   - component: {fileID: 294546494}
+  - component: {fileID: 294546495}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -151,7 +152,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &294546491
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -218,7 +219,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 294546489}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9dd7ee04acee64d449b4913d0d99b6be, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -248,9 +249,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lives: 3
   name: Mario
-  jumpHeight: 5
+  jumpHeight: 10
   speed: 5
   isOnGround: 0
+  groundContactFilter:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 256
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  horizontalAcceleration: 83.72
+  verticalAcceleration: 20
+  maxSpeed: 10
+--- !u!58 &294546495
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 294546489}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -1}
+  serializedVersion: 2
+  m_Radius: 0.8
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,9 +367,9 @@ GameObject:
   - component: {fileID: 693378489}
   - component: {fileID: 693378488}
   - component: {fileID: 693378490}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -407,7 +440,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 693378487}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3800cedc5d1fc3148811e3994aa15a34, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -433,7 +466,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4457838799258834, guid: 826141c05425bf84d99ce4502c33ad43, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -5
+      value: -9.25
       objectReference: {fileID: 0}
     - target: {fileID: 4457838799258834, guid: 826141c05425bf84d99ce4502c33ad43, type: 2}
       propertyPath: m_LocalPosition.y
@@ -463,6 +496,19 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1733987554659274, guid: 826141c05425bf84d99ce4502c33ad43, type: 2}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 61950992741020974, guid: 826141c05425bf84d99ce4502c33ad43,
+        type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 3800cedc5d1fc3148811e3994aa15a34, type: 2}
+    - target: {fileID: 1733987554659274, guid: 826141c05425bf84d99ce4502c33ad43, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 826141c05425bf84d99ce4502c33ad43, type: 2}
   m_IsPrefabParent: 0
@@ -475,7 +521,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4286228283220536, guid: 2bca29baf416c0d42ac1c947ddd0b353, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 4.5
+      value: 9.25
       objectReference: {fileID: 0}
     - target: {fileID: 4286228283220536, guid: 2bca29baf416c0d42ac1c947ddd0b353, type: 2}
       propertyPath: m_LocalPosition.y
@@ -504,6 +550,34 @@ Prefab:
     - target: {fileID: 4286228283220536, guid: 2bca29baf416c0d42ac1c947ddd0b353, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1447307678474098, guid: 2bca29baf416c0d42ac1c947ddd0b353, type: 2}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 61072992619882588, guid: 2bca29baf416c0d42ac1c947ddd0b353,
+        type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: d2af27e93ac5bab4f960859ab9f0129a, type: 2}
+    - target: {fileID: 212917137723694696, guid: 2bca29baf416c0d42ac1c947ddd0b353,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212917137723694696, guid: 2bca29baf416c0d42ac1c947ddd0b353,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.93442965
+      objectReference: {fileID: 0}
+    - target: {fileID: 212917137723694696, guid: 2bca29baf416c0d42ac1c947ddd0b353,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1447307678474098, guid: 2bca29baf416c0d42ac1c947ddd0b353, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2bca29baf416c0d42ac1c947ddd0b353, type: 2}
