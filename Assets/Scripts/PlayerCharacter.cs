@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour {
+    private enum Direction
+    {
+        left,
+        right
+    }
+
     [SerializeField]
     private int lives = 3;
+
+    [SerializeField]
+    private Direction directionFacing = Direction.right;
 
     [SerializeField]
     private string name = "Mario";
 
     [SerializeField]
-    private float jumpHeight = 50, speed = 5;
+    private float jumpHeight = 10, speed = 5;
 
     private bool jumping;
 
@@ -18,8 +27,11 @@ public class PlayerCharacter : MonoBehaviour {
     private bool isOnGround;
 
     private Rigidbody2D rigidBody2DInstance;
+
+    [SerializeField]
     private BoxCollider2D collision;
 
+    [SerializeField]
     private Collider2D groundDetectTrigger;
 
     [SerializeField]
@@ -31,12 +43,18 @@ public class PlayerCharacter : MonoBehaviour {
     private float verticalInput;
 
     [SerializeField]
+    private PhysicsMaterial2D playerMovingPhysicsMaterial, playerStoppingPhysicsMaterial;
+
+    [SerializeField]
     private float horizontalAcceleration = 5;
     [SerializeField]
     private float verticalAcceleration = 20;
 
     [SerializeField]
     private float maxSpeed = 5;
+
+    [SerializeField]
+    private BaseItem weapon;
 
 
 
@@ -57,42 +75,72 @@ public class PlayerCharacter : MonoBehaviour {
         HandleJumpInput();
 
     }
-
+    private void FixedUpdate()
+    {
+        UpdatePhysicsMaterial();
+        UpdateDirectionFacing();
+        Move();
+    }
     private void UpdateIsOnGround()
     {
         isOnGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundCollisionResults) > 0;
-        if(isOnGround == true)
+    }
+
+    private void UpdateDirectionFacing()
+    {
+        if(horizontalInput > 0)
         {
-            Debug.Log("yep chief, this is a ground alright");
+            directionFacing = Direction.right;
+        }
+        else if (horizontalInput < 0)
+        {
+            directionFacing = Direction.left;
         }
     }
-
-    private void FixedUpdate()
+    private void UpdatePhysicsMaterial()
     {
-        Move();
-    }
+        if(Mathf.Abs(horizontalInput) > 0)
+        {
+            // TODO moving physics material
+            collision.sharedMaterial = playerMovingPhysicsMaterial;
+        }
+        else
+        {
+            //TODO stopping physics material
+            collision.sharedMaterial = playerStoppingPhysicsMaterial;
 
+        }
+    }
     private void HandleJumpInput()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && isOnGround == true)
         {
             rigidBody2DInstance.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
         }
 
     }
-
     private void GetInput()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
     }
-    
     private void Move()
     {
-        rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0));
+        rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Impulse);
         Vector2 clampedVelocity = rigidBody2DInstance.velocity;
         clampedVelocity.x = Mathf.Clamp(rigidBody2DInstance.velocity.x, -maxSpeed, maxSpeed);
         rigidBody2DInstance.velocity = clampedVelocity;
+    }
+
+    public bool IsFacingLeft()
+    {
+        if (directionFacing == Direction.left)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
