@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Hazard : MonoBehaviour {
-
+public class Checkpoint : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("The player has touched the hazard");
+            Debug.Log("The player activated the checkpoint!");
             PlayerCharacter player = collision.GetComponent<PlayerCharacter>();
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            player.Respawn();
-        }
-        else
-        {
-            Debug.Log("Something touched the hazard");
+            player.SetCurrentCheckpoint(this);
         }
     }
 }

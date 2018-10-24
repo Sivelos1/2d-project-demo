@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class PlayerCharacter : MonoBehaviour {
+public class NonPlayerCharacter : MonoBehaviour {
+
     private enum Direction
     {
         left,
@@ -51,35 +51,28 @@ public class PlayerCharacter : MonoBehaviour {
     [SerializeField]
     private float maxSpeed = 5;
 
-    [SerializeField]
-    private BaseEquippable equip;
-
-    private bool holdingFireButton;
 
     private SpriteRenderer spriteRenderer;
 
     private Animator animator;
 
-    private Checkpoint currentCheckPoint;
-    
 
 
 
     // Use this for initialization
-    private void Start () {
+    private void Start()
+    {
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         rigidBody2DInstance = GetComponent<Rigidbody2D>();
         collision = GetComponent<BoxCollider2D>();
-        equip = new BaseEquippable();
-        Debug.Log("dude fuckin stellar lol");
+        Debug.Log("enemy IS HERE");
     }
-	
-	// Update is called once per frame
-	private void Update () {
+
+    // Update is called once per frame
+    private void Update()
+    {
         UpdateIsOnGround();
-        GetInput();
-        HandleJumpInput();
         SyncUpAnimations();
 
     }
@@ -87,7 +80,6 @@ public class PlayerCharacter : MonoBehaviour {
     {
         UpdatePhysicsMaterial();
         UpdateDirectionFacing();
-        ActivateEquipment();
         Move();
     }
     private void UpdateIsOnGround()
@@ -97,14 +89,12 @@ public class PlayerCharacter : MonoBehaviour {
 
     private void SyncUpAnimations()
     {
-        animator.SetBool("PressingMoveButton", (Mathf.Abs(Input.GetAxisRaw("Horizontal")) != 0));
-        animator.SetBool("TouchingGround", isOnGround);
-        animator.SetFloat("Y_Speed", rigidBody2DInstance.velocity.y);
+        
     }
 
     private void UpdateDirectionFacing()
     {
-        if(horizontalInput > 0)
+        if (horizontalInput > 0)
         {
             directionFacing = Direction.right;
         }
@@ -115,7 +105,7 @@ public class PlayerCharacter : MonoBehaviour {
     }
     private void UpdatePhysicsMaterial()
     {
-        if(Mathf.Abs(horizontalInput) > 0)
+        if (Mathf.Abs(rigidBody2DInstance.velocity.x) > 0)
         {
             // TODO moving physics material
             collision.sharedMaterial = playerMovingPhysicsMaterial;
@@ -127,37 +117,10 @@ public class PlayerCharacter : MonoBehaviour {
 
         }
     }
-    private void HandleJumpInput()
-    {
-        if (Input.GetButtonDown("Jump") && isOnGround == true)
-        {
-            rigidBody2DInstance.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
-        }
 
-    }
-    private void GetInput()
-    {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        if(equip != null)
-        {
-            if (equip.onlyTriggersOnFirstFrame == false)
-            {
-                holdingFireButton = Input.GetButton("Fire1");
-            }
-            else
-            {
-                holdingFireButton = Input.GetButtonDown("Fire1");
-            }
-        }
-        else
-        {
-            holdingFireButton = Input.GetButtonDown("Fire1");
-        }
-        
-    }
     private void Move()
     {
-        if(IsFacingLeft() == true)
+        if (IsFacingLeft() == true)
         {
             spriteRenderer.flipX = true;
         }
@@ -165,7 +128,7 @@ public class PlayerCharacter : MonoBehaviour {
         {
             spriteRenderer.flipX = false;
         }
-        if(isOnGround == false)
+        if (isOnGround == false)
         {
             rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
         }
@@ -177,21 +140,6 @@ public class PlayerCharacter : MonoBehaviour {
         clampedVelocity.x = Mathf.Clamp(rigidBody2DInstance.velocity.x, -maxSpeed, maxSpeed);
         rigidBody2DInstance.velocity = clampedVelocity;
     }
-    private void ActivateEquipment()
-    {
-        if(holdingFireButton == true)
-        {
-            if(equip != null)
-            {
-                equip.Fire();
-            }
-            else
-            {
-                Debug.Log("no fuckin weapon lol");
-            }
-        }
-    }
-
     public bool IsFacingLeft()
     {
         if (directionFacing == Direction.left)
@@ -202,24 +150,6 @@ public class PlayerCharacter : MonoBehaviour {
         {
             return false;
         }
-    }
-
-    public void Respawn()
-    {
-        if(currentCheckPoint == null)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-        else
-        {
-            rigidBody2DInstance.velocity = Vector2.zero;
-            transform.position = currentCheckPoint.transform.position;
-        }
-    }
-
-    public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
-    {
-        currentCheckPoint = newCurrentCheckpoint;
     }
 
 }

@@ -9,10 +9,19 @@ public enum Affects
     Source
 }
 
+public enum FiringCondition
+{
+    WhenFiring,
+    Always
+}
+
 public class Effect : MonoBehaviour {
 
     [SerializeField]
     private Affects Affects = Affects.None;
+
+    [SerializeField]
+    private FiringCondition FiringCondition = FiringCondition.WhenFiring;
 
 	// Use this for initialization
 	void Start () {
