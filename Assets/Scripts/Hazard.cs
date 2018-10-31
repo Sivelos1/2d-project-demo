@@ -12,7 +12,7 @@ public class Hazard : MonoBehaviour {
             Debug.Log("The player has touched the hazard");
             PlayerCharacter player = collision.GetComponent<PlayerCharacter>();
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            player.Respawn();
+            player.Die();
         }
         else
         {

@@ -11,7 +11,10 @@ public class PlayerCharacter : MonoBehaviour {
     }
 
     [SerializeField]
-    private int lives = 3;
+    private int health = 3;
+
+    [SerializeField]
+    private bool IsDead = false;
 
     [SerializeField]
     private Direction directionFacing = Direction.right;
@@ -54,6 +57,12 @@ public class PlayerCharacter : MonoBehaviour {
     [SerializeField]
     private BaseEquippable equip;
 
+    [SerializeField]
+    private float RespawnDelay = 1;
+
+    private float respawnTimer = 0;
+
+
     private bool holdingFireButton;
 
     private SpriteRenderer spriteRenderer;
@@ -61,6 +70,8 @@ public class PlayerCharacter : MonoBehaviour {
     private Animator animator;
 
     private Checkpoint currentCheckPoint;
+
+    bool Dying = false;
     
 
 
@@ -81,6 +92,11 @@ public class PlayerCharacter : MonoBehaviour {
         GetInput();
         HandleJumpInput();
         SyncUpAnimations();
+        if(IsDead == true)
+        {
+            
+            Death();
+        }
 
     }
     private void FixedUpdate()
@@ -97,6 +113,8 @@ public class PlayerCharacter : MonoBehaviour {
 
     private void SyncUpAnimations()
     {
+
+        animator.SetBool("Dead", IsDead);
         animator.SetBool("PressingMoveButton", (Mathf.Abs(Input.GetAxisRaw("Horizontal")) != 0));
         animator.SetBool("TouchingGround", isOnGround);
         animator.SetFloat("Y_Speed", rigidBody2DInstance.velocity.y);
@@ -129,6 +147,8 @@ public class PlayerCharacter : MonoBehaviour {
     }
     private void HandleJumpInput()
     {
+        if (IsDead == true)
+            return;
         if (Input.GetButtonDown("Jump") && isOnGround == true)
         {
             rigidBody2DInstance.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
@@ -137,6 +157,8 @@ public class PlayerCharacter : MonoBehaviour {
     }
     private void GetInput()
     {
+        if (IsDead == true)
+            return;
         horizontalInput = Input.GetAxisRaw("Horizontal");
         if(equip != null)
         {
@@ -165,6 +187,8 @@ public class PlayerCharacter : MonoBehaviour {
         {
             spriteRenderer.flipX = false;
         }
+        if (IsDead == true)
+            return;
         if(isOnGround == false)
         {
             rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
@@ -204,9 +228,53 @@ public class PlayerCharacter : MonoBehaviour {
         }
     }
 
+    private void Death()
+    {
+        if(Dying == false)
+        {
+            
+            rigidBody2DInstance.AddForce(new Vector2(-rigidBody2DInstance.velocity.x, -rigidBody2DInstance.velocity.y), ForceMode2D.Impulse);
+            collision.isTrigger = true;
+            if (directionFacing == Direction.left)
+            {
+                rigidBody2DInstance.AddForce(new Vector2(5, 10), ForceMode2D.Impulse);
+                
+            }
+            else
+            {
+                rigidBody2DInstance.AddForce(new Vector2(-5, 10), ForceMode2D.Impulse);
+                
+            }
+            collision.isTrigger = false;
+            Dying = true;
+
+        }
+        else
+        {
+            if(isOnGround == true)
+            {
+                respawnTimer += Time.deltaTime;
+                if (isOnGround && respawnTimer >= RespawnDelay)
+                {
+                    Respawn();
+                }
+            }
+            
+        }
+        
+    }
+
+    public void Die()
+    {
+        IsDead = true;
+    }
+
     public void Respawn()
     {
-        if(currentCheckPoint == null)
+        IsDead = false;
+        Dying = false;
+        respawnTimer = 0;
+        if (currentCheckPoint == null)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -214,7 +282,9 @@ public class PlayerCharacter : MonoBehaviour {
         {
             rigidBody2DInstance.velocity = Vector2.zero;
             transform.position = currentCheckPoint.transform.position;
+            
         }
+        
     }
 
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
