@@ -282,9 +282,15 @@ public class PlayerCharacter : MonoBehaviour {
         {
             rigidBody2DInstance.velocity = Vector2.zero;
             transform.position = currentCheckPoint.transform.position;
+            SyncUpAnimations();
             
         }
         
+    }
+
+    public bool GetIsDeadValue()
+    {
+        return IsDead;
     }
 
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
