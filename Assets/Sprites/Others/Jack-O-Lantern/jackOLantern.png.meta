@@ -6,6 +6,7 @@ TextureImporter:
     21300002: jackOLantern_1
     21300004: jackOLantern_2
     21300006: jackOLantern_3
+    21300008: jackOLantern_4
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -100,7 +101,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d0ae39d6e410ba4b9e368fcb5d836c5
+      spriteID: 512f71f1918220b42a000d9676bd3020
       vertices: []
       indices: 
       edges: []
@@ -120,7 +121,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6963adcbab17e80479d29c4ebefb9e90
+      spriteID: 92daff8f7efc1ef42b278e4489718e94
       vertices: []
       indices: 
       edges: []
@@ -140,7 +141,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 35c6a3ffb954b104f9b7e016a8f847b2
+      spriteID: d4413488a8436e54799044ced4d29639
       vertices: []
       indices: 
       edges: []
@@ -160,7 +161,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 826a5afe692277f49910fa4028993193
+      spriteID: 1304369d70de3c043a4809d7682d5cfb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jackOLantern_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cd3df14527629d45a920530dcb497ba
       vertices: []
       indices: 
       edges: []
