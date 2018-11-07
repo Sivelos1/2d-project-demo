@@ -14,6 +14,9 @@ public class PlayerCharacter : MonoBehaviour {
     private int health = 3;
 
     [SerializeField]
+    private int Coins = 0;
+
+    [SerializeField]
     private bool IsDead = false;
 
     [SerializeField]
@@ -72,12 +75,15 @@ public class PlayerCharacter : MonoBehaviour {
     private Checkpoint currentCheckPoint;
 
     bool Dying = false;
+
+    private AudioSource sound;
     
 
 
 
     // Use this for initialization
     private void Start () {
+        sound = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         rigidBody2DInstance = GetComponent<Rigidbody2D>();
@@ -151,6 +157,7 @@ public class PlayerCharacter : MonoBehaviour {
             return;
         if (Input.GetButtonDown("Jump") && isOnGround == true)
         {
+            sound.Play();
             rigidBody2DInstance.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
         }
 
@@ -287,15 +294,18 @@ public class PlayerCharacter : MonoBehaviour {
         }
         
     }
-
     public bool GetIsDeadValue()
     {
         return IsDead;
     }
-
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
     {
         currentCheckPoint = newCurrentCheckpoint;
+    }
+
+    public void GetCoin(int amount)
+    {
+        Coins += amount;
     }
 
 }

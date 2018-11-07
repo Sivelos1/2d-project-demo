@@ -9,6 +9,9 @@ public class Transfer : MonoBehaviour {
     private string TargetScene;
 
     [SerializeField]
+    private bool RequiresInput;
+
+    [SerializeField]
     private bool RoundTrip;
 
     [SerializeField]
@@ -30,63 +33,103 @@ public class Transfer : MonoBehaviour {
     [SerializeField]
     private bool UsedTransfer = false;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    [SerializeField]
+    bool Locked = false;
+    
+
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+
             user = collision.GetComponentInParent<PlayerCharacter>();
             if (user.GetIsDeadValue() == true)
                 return;
-            if(RoundTrip == false && UsedTransfer == true)
+
+            if(Locked == true)
+            {
+                Debug.Log("Locked.");
+                return;
+            }
+
+            if (RoundTrip == false && UsedTransfer == true)
             {
                 Debug.Log("This transfer cannot be used more than once.");
                 return;
             }
-            if (TransfersToPointInSameLevel == false)
+            if (RequiresInput == true)
             {
-                if(TargetScene == null || TargetScene == "")
+                if (Input.GetButtonDown("Activate"))
                 {
-                    Debug.Log("This transfer has no target.");
-                    return;
-                }
-                SceneManager.LoadScene(TargetScene);
-                
-                if (UseTargetCoordinates == true)
-                {
-                    Debug.Log("The player activated the door.");
-                    user.transform.position = new Vector3(TargetX, TargetY);
-                    if (RoundTrip == false)
-                    {
-                        UsedTransfer = true;
-                    }
+                    ActivateTransfer();
+                    Debug.Log("Tu du du~ thanks for using the transfer.");
                 }
             }
             else
             {
-                if (UseTargetCoordinates == true)
-                {
-                    Debug.Log("The player activated the door.");
-                    user.transform.position = new Vector3(TargetX, TargetY);
-                    if (RoundTrip == false)
-                    {
-                        UsedTransfer = true;
-                    }
-                }
-                else if (Target != null)
-                {
-                    Debug.Log("The player activated the door.");
-                    user.transform.position = Target.transform.position;
-                    if(RoundTrip == false)
-                    {
-                        UsedTransfer = true;
-                    }
-                }
-                else
-                {
-                    Debug.Log("The transfer has no target.");
-                }
+                ActivateTransfer();
+                Debug.Log("Tu du du~ thanks for using the transfer.");
+            }
+            
+
+        }
+    }
+
+    private void ActivateTransfer()
+    {
+        if (TransfersToPointInSameLevel == false)
+        {
+            if (TargetScene == null || TargetScene == "")
+            {
+                Debug.Log("This transfer has no target.");
+                return;
+            }
+            Debug.Log("The player activated the door.");
+            user.transform.position = new Vector3(TargetX, TargetY);
+            if (RoundTrip == false)
+            {
+                UsedTransfer = true;
             }
 
+            if (UseTargetCoordinates == true)
+            {
+                Debug.Log("The player activated the door.");
+                user.transform.position = new Vector3(TargetX, TargetY);
+                if (RoundTrip == false)
+                {
+                    UsedTransfer = true;
+                }
+            }
+        }
+        else
+        {
+
+            if (UseTargetCoordinates == true)
+            {
+
+                Debug.Log("The player activated the door.");
+                user.transform.position = new Vector3(TargetX, TargetY);
+                if (RoundTrip == false)
+                {
+                    UsedTransfer = true;
+                }
+            }
+            else if (Target != null)
+            {
+                Debug.Log("The player activated the door.");
+                user.transform.position = Target.transform.position;
+                if (RoundTrip == false)
+                {
+                    UsedTransfer = true;
+                }
+            }
+            else
+            {
+                Debug.Log("The transfer has no target.");
+            }
+            
+
+            
         }
     }
 }
