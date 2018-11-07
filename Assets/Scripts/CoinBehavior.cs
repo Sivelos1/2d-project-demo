@@ -21,7 +21,6 @@ public class CoinBehavior : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            
             user = collision.gameObject.GetComponent<PlayerCharacter>();
             user.GetCoin(Worth);
             sound.Play();
