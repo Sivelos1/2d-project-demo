@@ -32,6 +32,8 @@ public class PlayerCharacter : MonoBehaviour {
 
     private Rigidbody2D rigidBody2DInstance;
 
+    private SpriteRenderer sprite;
+
     [SerializeField]
     private BoxCollider2D collision;
 
@@ -65,25 +67,30 @@ public class PlayerCharacter : MonoBehaviour {
 
     private float respawnTimer = 0;
 
-
-    private bool holdingFireButton;
-
     private SpriteRenderer spriteRenderer;
 
     private Animator animator;
 
     private Checkpoint currentCheckPoint;
 
-    bool Dying = false;
+    private bool Dying = false;
+
+    private Transfer targetDoor;
+
+    private bool EnteringDoor;
 
     private AudioSource sound;
-    
+
+    [SerializeField]
+    private AudioClip jumpSound, deathSound, hurtSound;
+
 
 
 
     // Use this for initialization
     private void Start () {
         sound = GetComponent<AudioSource>();
+        sprite = GetComponent<SpriteRenderer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         rigidBody2DInstance = GetComponent<Rigidbody2D>();
@@ -91,25 +98,51 @@ public class PlayerCharacter : MonoBehaviour {
         equip = new BaseEquippable();
         Debug.Log("dude fuckin stellar lol");
     }
-	
-	// Update is called once per frame
-	private void Update () {
-        UpdateIsOnGround();
-        GetInput();
-        HandleJumpInput();
-        SyncUpAnimations();
-        if(IsDead == true)
+    // Update is called once per frame
+    private void Update() {
+        if (EnteringDoor == true)
         {
-            
-            Death();
+            if (IsFacingLeft() == true)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else
+            {
+                spriteRenderer.flipX = false;
+            }
+            if (IsDead == true)
+                return;
+            if (isOnGround == false)
+            {
+                rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
+            }
+            else
+            {
+                rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
+            }
+            Vector2 clampedVelocity = rigidBody2DInstance.velocity;
+            clampedVelocity.x = Mathf.Clamp(rigidBody2DInstance.velocity.x, -maxSpeed, maxSpeed);
+            rigidBody2DInstance.velocity = clampedVelocity;
         }
+        else
+        {
+            UpdateIsOnGround();
+            GetInput();
+            HandleJumpInput();
+            SyncUpAnimations();
+            if (IsDead == true)
+            {
+
+                Death();
+            }
+        }
+        
 
     }
     private void FixedUpdate()
     {
         UpdatePhysicsMaterial();
         UpdateDirectionFacing();
-        ActivateEquipment();
         Move();
     }
     private void UpdateIsOnGround()
@@ -157,6 +190,7 @@ public class PlayerCharacter : MonoBehaviour {
             return;
         if (Input.GetButtonDown("Jump") && isOnGround == true)
         {
+            sound.clip = jumpSound;
             sound.Play();
             rigidBody2DInstance.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
         }
@@ -167,21 +201,6 @@ public class PlayerCharacter : MonoBehaviour {
         if (IsDead == true)
             return;
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        if(equip != null)
-        {
-            if (equip.onlyTriggersOnFirstFrame == false)
-            {
-                holdingFireButton = Input.GetButton("Fire1");
-            }
-            else
-            {
-                holdingFireButton = Input.GetButtonDown("Fire1");
-            }
-        }
-        else
-        {
-            holdingFireButton = Input.GetButtonDown("Fire1");
-        }
         
     }
     private void Move()
@@ -208,20 +227,6 @@ public class PlayerCharacter : MonoBehaviour {
         clampedVelocity.x = Mathf.Clamp(rigidBody2DInstance.velocity.x, -maxSpeed, maxSpeed);
         rigidBody2DInstance.velocity = clampedVelocity;
     }
-    private void ActivateEquipment()
-    {
-        if(holdingFireButton == true)
-        {
-            if(equip != null)
-            {
-                equip.Fire();
-            }
-            else
-            {
-                Debug.Log("no fuckin weapon lol");
-            }
-        }
-    }
 
     public bool IsFacingLeft()
     {
@@ -239,7 +244,8 @@ public class PlayerCharacter : MonoBehaviour {
     {
         if(Dying == false)
         {
-            
+            sound.clip = deathSound;
+            sound.Play();
             rigidBody2DInstance.AddForce(new Vector2(-rigidBody2DInstance.velocity.x, -rigidBody2DInstance.velocity.y), ForceMode2D.Impulse);
             collision.isTrigger = true;
             if (directionFacing == Direction.left)
@@ -260,6 +266,7 @@ public class PlayerCharacter : MonoBehaviour {
         {
             if(isOnGround == true)
             {
+                
                 respawnTimer += Time.deltaTime;
                 if (isOnGround && respawnTimer >= RespawnDelay)
                 {
@@ -306,6 +313,22 @@ public class PlayerCharacter : MonoBehaviour {
     public void GetCoin(int amount)
     {
         Coins += amount;
+    }
+
+    public void GoIntoDoor(Transfer target)
+    {
+        targetDoor = target;
+        EnteringDoor = true;
+    }
+
+    public void Hide()
+    {
+        spriteRenderer.enabled = false;
+    }
+
+    public void Show()
+    {
+        spriteRenderer.enabled = true;
     }
 
 }

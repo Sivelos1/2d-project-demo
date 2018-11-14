@@ -34,8 +34,18 @@ public class Transfer : MonoBehaviour {
     private bool UsedTransfer = false;
 
     [SerializeField]
-    bool Locked = false;
+    private bool Locked = false;
+
     
+    private bool Opening;
+
+    private Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -57,20 +67,18 @@ public class Transfer : MonoBehaviour {
                 Debug.Log("This transfer cannot be used more than once.");
                 return;
             }
-            if (RequiresInput == true)
+            if (Input.GetButtonDown("Activate"))
             {
-                if (Input.GetButtonDown("Activate"))
+                animator.SetBool("Opening", true);
+                user.GoIntoDoor(this);
+                if (user.transform.position.x == gameObject.transform.position.x)
                 {
                     ActivateTransfer();
                     Debug.Log("Tu du du~ thanks for using the transfer.");
                 }
+                
             }
-            else
-            {
-                ActivateTransfer();
-                Debug.Log("Tu du du~ thanks for using the transfer.");
-            }
-            
+
 
         }
     }

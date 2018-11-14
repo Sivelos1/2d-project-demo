@@ -10,6 +10,7 @@ TextureImporter:
     21300010: player_5
     21300012: player_6
     21300014: player_7
+    21300016: player_8
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -104,7 +105,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a5cb58956d374440af7de4e3bb0494d
+      spriteID: aae461d727d5ea14ebb6098f1b38286e
       vertices: []
       indices: 
       edges: []
@@ -124,7 +125,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d49a08cc3eaf2e04a8593cd17a95b14d
+      spriteID: 43ea8dc0545a9b749ab347dfca683064
       vertices: []
       indices: 
       edges: []
@@ -144,7 +145,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 365e272651629094b98de823c2726c35
+      spriteID: ee7b9683ac372044bbb67cc7ce2738fa
       vertices: []
       indices: 
       edges: []
@@ -164,7 +165,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 241f2062398292743824b727308dc228
+      spriteID: 7e61a09abc7d9694ea539ef0d41bf368
       vertices: []
       indices: 
       edges: []
@@ -184,7 +185,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb802137cd080754b8c5631ae1f1d59e
+      spriteID: 16c9ea3b67df1ad46826291ba001233b
       vertices: []
       indices: 
       edges: []
@@ -204,7 +205,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0128f934aa6992942b4b4d85679295d2
+      spriteID: 6fda2d2baf1e64e45902f8020172f275
       vertices: []
       indices: 
       edges: []
@@ -224,7 +225,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d47f50e35ff8a00458f646bbd3d69ef9
+      spriteID: b287da2e0ec6cac4da75baf227cc28cd
       vertices: []
       indices: 
       edges: []
@@ -244,7 +245,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7358806718e7d5a4c88f7f5dd7ef56f1
+      spriteID: 070027d3b045e0f478d87116e98a1d5c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_8
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c94b124219f623943a5d0118714a4a2c
       vertices: []
       indices: 
       edges: []
