@@ -84,6 +84,8 @@ public class PlayerCharacter : MonoBehaviour {
     [SerializeField]
     private AudioClip jumpSound, deathSound, hurtSound;
 
+    private bool DisableInput = false;
+
 
 
 
@@ -127,8 +129,11 @@ public class PlayerCharacter : MonoBehaviour {
         else
         {
             UpdateIsOnGround();
-            GetInput();
-            HandleJumpInput();
+            if(DisableInput == false)
+            {
+                GetInput();
+                HandleJumpInput();
+            }
             SyncUpAnimations();
             if (IsDead == true)
             {
@@ -149,16 +154,14 @@ public class PlayerCharacter : MonoBehaviour {
     {
         isOnGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundCollisionResults) > 0;
     }
-
     private void SyncUpAnimations()
     {
-
+        animator.SetBool("GoingIntoDoor", EnteringDoor);
         animator.SetBool("Dead", IsDead);
         animator.SetBool("PressingMoveButton", (Mathf.Abs(Input.GetAxisRaw("Horizontal")) != 0));
         animator.SetBool("TouchingGround", isOnGround);
         animator.SetFloat("Y_Speed", rigidBody2DInstance.velocity.y);
     }
-
     private void UpdateDirectionFacing()
     {
         if(horizontalInput > 0)
@@ -329,6 +332,16 @@ public class PlayerCharacter : MonoBehaviour {
     public void Show()
     {
         spriteRenderer.enabled = true;
+    }
+
+    public bool AreControlsDisabled()
+    {
+        return DisableInput;
+    }
+
+    public void ToggleInputControl()
+    {
+        DisableInput = !DisableInput;
     }
 
 }

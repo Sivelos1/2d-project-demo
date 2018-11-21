@@ -26,7 +26,7 @@ public class Transfer : MonoBehaviour {
     private float TargetY;
 
     [SerializeField]
-    private GameObject Target;
+    private Transfer Target;
 
     private PlayerCharacter user;
 
@@ -36,16 +36,19 @@ public class Transfer : MonoBehaviour {
     [SerializeField]
     private bool Locked = false;
 
-    
+    [SerializeField]
+    private float TransferDelay = 1;
+
     private bool Opening;
 
     private Animator animator;
+
+    private float transferDelayTimer = 0;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
     }
-
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -69,21 +72,38 @@ public class Transfer : MonoBehaviour {
             }
             if (Input.GetButtonDown("Activate"))
             {
-                animator.SetBool("Opening", true);
-                user.GoIntoDoor(this);
-                if (user.transform.position.x == gameObject.transform.position.x)
-                {
-                    ActivateTransfer();
-                    Debug.Log("Tu du du~ thanks for using the transfer.");
-                }
-                
+                animator.SetBool("Open", true);
+                ActivateTransfer();
+                Debug.Log("Tu du du~ thanks for using the transfer.");
+
             }
 
 
         }
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (Opening == true)
+            {
+                CloseDoor();
+            }
+        }
+    }
+
     private void ActivateTransfer()
+    {
+        OpenDoor();
+        MovePlayerToTarget();
+        if(Target != null)
+        {
+            Target.OpenDoor();
+        }
+    }
+
+    private void MovePlayerToTarget()
     {
         if (TransfersToPointInSameLevel == false)
         {
@@ -93,7 +113,7 @@ public class Transfer : MonoBehaviour {
                 return;
             }
             Debug.Log("The player activated the door.");
-            user.transform.position = new Vector3(TargetX, TargetY);
+            SceneManager.LoadScene(TargetScene);
             if (RoundTrip == false)
             {
                 UsedTransfer = true;
@@ -135,9 +155,21 @@ public class Transfer : MonoBehaviour {
             {
                 Debug.Log("The transfer has no target.");
             }
-            
 
-            
+
+
         }
+    }
+
+    public void OpenDoor()
+    {
+        Opening = true;
+        animator.SetBool("Open", Opening);
+    }
+
+    public void CloseDoor()
+    {
+        Opening = false;
+        animator.SetBool("Open", Opening);
     }
 }
