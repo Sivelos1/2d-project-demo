@@ -2,17 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum WeaponType
+{
+    Primary,
+    Secondary
+}
+
 public class BaseEquippable : MonoBehaviour {
     [SerializeField]
-    public string name;
+    private string name;
 
     [SerializeField]
-    public bool onlyTriggersOnFirstFrame = true;
+    private bool onlyTriggersOnButtonDown = true;
+
+    private bool fire;
 
     [SerializeField]
-    public PlayerCharacter user;
+    private WeaponType weaponType;
 
-    private List<Effect> effects = new List<Effect>();
+    [SerializeField]
+    private PlayerCharacter user;
+
+    [SerializeField]
+    private List<GameObject> emissions = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
@@ -21,20 +33,38 @@ public class BaseEquippable : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        GetInput();
 	}
 
     private void FixedUpdate()
     {
-        
+        if(fire == true)
+        {
+            Fire();
+        }
+    }
+
+    public void GetInput()
+    {
+        if(onlyTriggersOnButtonDown == true)
+        {
+            fire = Input.GetButtonDown("Fire1");
+        }
+        else
+        {
+            fire = Input.GetButton("Fire1");
+        }
     }
 
     public void Fire()
     {
         Debug.Log("Firing!");
-        foreach (Effect e in effects)
+        foreach (GameObject g in emissions)
         {
-            e.Trigger();
+            Instantiate(g);
+            g.transform.position = gameObject.transform.position;
+            
         }
+
     }
 }

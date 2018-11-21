@@ -11,7 +11,10 @@ public class NonPlayerCharacter : MonoBehaviour {
     }
 
     [SerializeField]
-    private int lives = 3;
+    private string Name = "NPC";
+
+    [SerializeField]
+    private int HealthPoints = 3;
 
     [SerializeField]
     private Direction directionFacing = Direction.right;
