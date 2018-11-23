@@ -10,7 +10,10 @@ public enum WeaponType
 
 public class BaseEquippable : MonoBehaviour {
     [SerializeField]
-    private string name;
+    private string name = "N/A";
+
+    [SerializeField]
+    private string InputKey = "N/A";
 
     [SerializeField]
     private bool onlyTriggersOnButtonDown = true;
@@ -24,45 +27,50 @@ public class BaseEquippable : MonoBehaviour {
     private PlayerCharacter user;
 
     [SerializeField]
-    private List<GameObject> emissions = new List<GameObject>();
+    private List<Bullet> emissions = new List<Bullet>();
 
 	// Use this for initialization
 	void Start () {
         user = GetComponentInParent<PlayerCharacter>();
+        if(user != null)
+        {
+            Debug.Log(name + " has a parent user.");
+        }
 	}
 	
 	// Update is called once per frame
 	void Update () {
         GetInput();
-	}
-
-    private void FixedUpdate()
-    {
-        if(fire == true)
+        if (fire == true)
         {
             Fire();
         }
+    }
+
+    private void FixedUpdate()
+    {
+        
     }
 
     public void GetInput()
     {
         if(onlyTriggersOnButtonDown == true)
         {
-            fire = Input.GetButtonDown("Fire1");
+            fire = Input.GetButtonDown(InputKey);
         }
         else
         {
-            fire = Input.GetButton("Fire1");
+            fire = Input.GetButton(InputKey);
         }
     }
 
     public void Fire()
     {
         Debug.Log("Firing!");
-        foreach (GameObject g in emissions)
+        foreach (Bullet g in emissions)
         {
             Instantiate(g);
-            g.transform.position = gameObject.transform.position;
+            g.transform.position = user.transform.position;
             
         }
 

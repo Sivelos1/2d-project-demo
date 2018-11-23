@@ -12,6 +12,9 @@ public class Transfer : MonoBehaviour {
     private bool RequiresInput;
 
     [SerializeField]
+    private string InputToOpen = "Vertical";
+
+    [SerializeField]
     private bool RoundTrip;
 
     [SerializeField]
@@ -70,13 +73,27 @@ public class Transfer : MonoBehaviour {
                 Debug.Log("This transfer cannot be used more than once.");
                 return;
             }
-            if (Input.GetButtonDown("Activate"))
+            if(InputToOpen != "Horizontal" || InputToOpen != "Vertical")
             {
-                animator.SetBool("Open", true);
-                ActivateTransfer();
-                Debug.Log("Tu du du~ thanks for using the transfer.");
+                if (Input.GetButtonDown(InputToOpen))
+                {
+                    animator.SetBool("Open", true);
+                    ActivateTransfer();
+                    Debug.Log("Tu du du~ thanks for using the transfer.");
 
+                }
             }
+            else
+            {
+                if (Input.GetAxis(InputToOpen) > 0)
+                {
+                    animator.SetBool("Open", true);
+                    ActivateTransfer();
+                    Debug.Log("Tu du du~ thanks for using the transfer.");
+
+                }
+            }
+            
 
 
         }

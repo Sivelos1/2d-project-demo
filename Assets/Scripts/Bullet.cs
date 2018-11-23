@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-    [SerializeField]
     private PlayerCharacter user;
+
+    private BaseEquippable Spawner;
 
     [SerializeField]
     private float Angle;
@@ -24,12 +25,18 @@ public class Bullet : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        user = GetComponentInParent<PlayerCharacter>();
+        Spawner = GetComponentInParent<BaseEquippable>();
         Physics = GetComponent<Rigidbody2D>();
         Collision = GetComponent<Collider2D>();
-        Physics.AddForce(new Vector2((Mathf.Cos(Angle) * Speed), (Mathf.Sin(Angle) * Speed)));
         if (user.IsFacingLeft() == true)
         {
+            Physics.AddForce(new Vector2(-(Mathf.Cos(Angle) * Speed), (Mathf.Sin(Angle) * Speed)));
 
+        }
+        else
+        {
+            Physics.AddForce(new Vector2((Mathf.Cos(Angle) * Speed), (Mathf.Sin(Angle) * Speed)));
         }
     }
 	
@@ -49,4 +56,10 @@ public class Bullet : MonoBehaviour {
             Debug.Log("Oof! The enemy was hit by the bullet.");
         }
     }
+
+    public void GetUser(PlayerCharacter Source)
+    {
+        user = Source;
+    }
+
 }
