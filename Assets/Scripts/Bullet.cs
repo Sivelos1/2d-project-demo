@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-    private PlayerCharacter user;
-
-    private BaseEquippable Spawner;
-
-    [SerializeField]
-    private float Angle;
-
-    [SerializeField]
-    private float Speed;
-
     [SerializeField]
     private float TimeBeforeDecay = 1;
 
@@ -21,23 +11,13 @@ public class Bullet : MonoBehaviour {
 
     private Collider2D Collision;
 
+    [SerializeField]
     private Rigidbody2D Physics;
 
 	// Use this for initialization
 	void Start () {
-        user = GetComponentInParent<PlayerCharacter>();
-        Spawner = GetComponentInParent<BaseEquippable>();
         Physics = GetComponent<Rigidbody2D>();
         Collision = GetComponent<Collider2D>();
-        if (user.IsFacingLeft() == true)
-        {
-            Physics.AddForce(new Vector2(-(Mathf.Cos(Angle) * Speed), (Mathf.Sin(Angle) * Speed)));
-
-        }
-        else
-        {
-            Physics.AddForce(new Vector2((Mathf.Cos(Angle) * Speed), (Mathf.Sin(Angle) * Speed)));
-        }
     }
 	
 	// Update is called once per frame
@@ -57,9 +37,7 @@ public class Bullet : MonoBehaviour {
         }
     }
 
-    public void GetUser(PlayerCharacter Source)
-    {
-        user = Source;
-    }
+
+
 
 }

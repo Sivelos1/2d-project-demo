@@ -16,6 +16,9 @@ public class BaseEquippable : MonoBehaviour {
     private string InputKey = "N/A";
 
     [SerializeField]
+    public Transform bulletOrigin;
+
+    [SerializeField]
     private bool onlyTriggersOnButtonDown = true;
 
     private bool fire;
@@ -27,7 +30,7 @@ public class BaseEquippable : MonoBehaviour {
     private PlayerCharacter user;
 
     [SerializeField]
-    private List<Bullet> emissions = new List<Bullet>();
+    private List<Emmission> emissions = new List<Emmission>();
 
 	// Use this for initialization
 	void Start () {
@@ -40,11 +43,25 @@ public class BaseEquippable : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        AlignWeapon();
         GetInput();
         if (fire == true)
         {
             Fire();
         }
+    }
+
+    private void AlignWeapon()
+    {
+        if(user.IsFacingLeft() == true)
+        {
+            gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
+        }
+        else
+        {
+            gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+        }
+
     }
 
     private void FixedUpdate()
@@ -67,12 +84,26 @@ public class BaseEquippable : MonoBehaviour {
     public void Fire()
     {
         Debug.Log("Firing!");
-        foreach (Bullet g in emissions)
+        foreach (Emmission g in emissions)
         {
-            Instantiate(g);
-            g.transform.position = user.transform.position;
+            g.GetPhysics();
+            Rigidbody2D bullet;
+            bullet = Instantiate(g.EmissionPhysics, bulletOrigin.position, bulletOrigin.rotation) as Rigidbody2D;
+            if (user.IsFacingLeft() && g.IgnoreWeaponRotation == false)
+            {
+                bullet.AddForce(-g.Trajectory);
+            }
+            else
+            {
+                bullet.AddForce(g.Trajectory);
+            }
             
         }
 
+    }
+
+    public PlayerCharacter GetUser()
+    {
+        return user;
     }
 }
