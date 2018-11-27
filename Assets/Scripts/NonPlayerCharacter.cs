@@ -38,6 +38,9 @@ public class NonPlayerCharacter : MonoBehaviour {
     [SerializeField]
     private ContactFilter2D groundContactFilter;
 
+    [SerializeField]
+    private Collider2D DetectionArea;
+
     private Collider2D[] groundCollisionResults = new Collider2D[16];
 
     private float horizontalInput;
@@ -125,11 +128,11 @@ public class NonPlayerCharacter : MonoBehaviour {
     {
         if (IsFacingLeft() == true)
         {
-            spriteRenderer.flipX = true;
+            gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
         }
         else
         {
-            spriteRenderer.flipX = false;
+            gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
         }
         if (isOnGround == false)
         {

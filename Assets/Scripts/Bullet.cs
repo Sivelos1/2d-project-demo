@@ -14,6 +14,9 @@ public class Bullet : MonoBehaviour {
     [SerializeField]
     private Rigidbody2D Physics;
 
+    [SerializeField]
+    private bool HasGravity;
+
 	// Use this for initialization
 	void Start () {
         Physics = GetComponent<Rigidbody2D>();
