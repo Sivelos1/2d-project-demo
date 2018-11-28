@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NonPlayerCharacter : MonoBehaviour {
 
-    private enum Direction
+    public enum Direction
     {
         left,
         right
@@ -14,7 +14,10 @@ public class NonPlayerCharacter : MonoBehaviour {
     private string Name = "NPC";
 
     [SerializeField]
-    private int HealthPoints = 3;
+    public int HealthPoints = 3;
+
+    [SerializeField]
+    private int MaxHealth = 3;
 
     [SerializeField]
     private Direction directionFacing = Direction.right;
@@ -39,7 +42,7 @@ public class NonPlayerCharacter : MonoBehaviour {
     private ContactFilter2D groundContactFilter;
 
     [SerializeField]
-    private Collider2D DetectionArea;
+    private Collider2D Detection;
 
     private Collider2D[] groundCollisionResults = new Collider2D[16];
 
@@ -55,6 +58,9 @@ public class NonPlayerCharacter : MonoBehaviour {
     private float verticalAcceleration = 20;
 
     [SerializeField]
+    private bool CanBeHurtByPlayer;
+
+    [SerializeField]
     private float maxSpeed = 5;
 
 
@@ -68,11 +74,16 @@ public class NonPlayerCharacter : MonoBehaviour {
     // Use this for initialization
     private void Start()
     {
+        HealthPoints = MaxHealth;
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         rigidBody2DInstance = GetComponent<Rigidbody2D>();
         collision = GetComponent<BoxCollider2D>();
-        Debug.Log("enemy IS HERE");
+        Detection = GetComponentInChildren<Collider2D>();
+        if (Detection != null)
+        {
+            Debug.Log("We have eyesight lads");
+        }
     }
 
     // Update is called once per frame
@@ -86,7 +97,6 @@ public class NonPlayerCharacter : MonoBehaviour {
     {
         UpdatePhysicsMaterial();
         UpdateDirectionFacing();
-        Move();
     }
     private void UpdateIsOnGround()
     {
@@ -96,6 +106,16 @@ public class NonPlayerCharacter : MonoBehaviour {
     private void SyncUpAnimations()
     {
         
+    }
+    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Player spotted!");
+        }
+
     }
 
     private void UpdateDirectionFacing()
@@ -124,7 +144,7 @@ public class NonPlayerCharacter : MonoBehaviour {
         }
     }
 
-    private void Move()
+    private void TurnSprite()
     {
         if (IsFacingLeft() == true)
         {
@@ -134,18 +154,68 @@ public class NonPlayerCharacter : MonoBehaviour {
         {
             gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
         }
-        if (isOnGround == false)
-        {
-            rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
-        }
-        else
-        {
-            rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
-        }
-        Vector2 clampedVelocity = rigidBody2DInstance.velocity;
-        clampedVelocity.x = Mathf.Clamp(rigidBody2DInstance.velocity.x, -maxSpeed, maxSpeed);
-        rigidBody2DInstance.velocity = clampedVelocity;
     }
+
+    public void Move(Direction direction, float time)
+    {
+        
+        float movementTimer = 0;
+        directionFacing = direction;
+        TurnSprite();
+        collision.sharedMaterial = playerMovingPhysicsMaterial;
+        while (movementTimer < time)
+        {
+            if (isOnGround == false)
+            {
+                rigidBody2DInstance = GetComponent<Rigidbody2D>();
+                rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration), 0), ForceMode2D.Force);
+            }
+            else
+            {
+                rigidBody2DInstance = GetComponent<Rigidbody2D>();
+                rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration), 0), ForceMode2D.Impulse);
+            }
+            Vector2 clampedVelocity = rigidBody2DInstance.velocity;
+            clampedVelocity.x = Mathf.Clamp(rigidBody2DInstance.velocity.x, -maxSpeed, maxSpeed);
+            rigidBody2DInstance.velocity = clampedVelocity;
+            movementTimer += Time.deltaTime;
+        }
+        Debug.Log("Moving complete");
+        collision.sharedMaterial = playerStoppingPhysicsMaterial;
+
+    }
+
+    public void Jump()
+    {
+        if(isOnGround == true)
+        {
+            rigidBody2DInstance.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+        }
+        
+    }
+
+    //private void Move()
+    //{
+    //    if (IsFacingLeft() == true)
+    //    {
+    //        gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
+    //    }
+    //    else
+    //    {
+    //        gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+    //    }
+    //    if (isOnGround == false)
+    //    {
+    //        rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
+    //    }
+    //    else
+    //    {
+    //        rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
+    //    }
+    //    Vector2 clampedVelocity = rigidBody2DInstance.velocity;
+    //    clampedVelocity.x = Mathf.Clamp(rigidBody2DInstance.velocity.x, -maxSpeed, maxSpeed);
+    //    rigidBody2DInstance.velocity = clampedVelocity;
+    //}
     public bool IsFacingLeft()
     {
         if (directionFacing == Direction.left)
@@ -157,5 +227,11 @@ public class NonPlayerCharacter : MonoBehaviour {
             return false;
         }
     }
+
+    public bool IsOnGround()
+    {
+        return isOnGround;
+    }
+
 
 }

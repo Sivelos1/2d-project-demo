@@ -99,12 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6b6bae1b54a094b983addc934f74ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Spawner: {fileID: 0}
-  IgnoreWeaponRotation: 0
-  Angle: 0
-  Speed: 300
   TimeBeforeDecay: 5
   Physics: {fileID: 50668390781622078}
+  HasGravity: 0
+  DisappearsOnCollision: 1
 --- !u!212 &212276825953550012
 SpriteRenderer:
   m_ObjectHideFlags: 1

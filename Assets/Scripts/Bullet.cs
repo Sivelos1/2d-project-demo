@@ -17,6 +17,9 @@ public class Bullet : MonoBehaviour {
     [SerializeField]
     private bool HasGravity;
 
+    [SerializeField]
+    public bool DisappearsOnCollision;
+
 	// Use this for initialization
 	void Start () {
         Physics = GetComponent<Rigidbody2D>();
@@ -31,14 +34,7 @@ public class Bullet : MonoBehaviour {
             Destroy(gameObject);
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Oof! The enemy was hit by the bullet.");
-        }
-    }
+    
 
 
 
