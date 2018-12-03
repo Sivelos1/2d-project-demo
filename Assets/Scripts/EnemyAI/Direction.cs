@@ -45,4 +45,21 @@ public class Direction : MonoBehaviour {
             objectTransform.rotation = new Quaternion(0, 0, 0, 0);
         }
 	}
+
+    public void Turn180Degrees()
+    {
+        if(DirectionFacing == DirectionValue.Left)
+            DirectionFacing = DirectionValue.Right;
+
+        if(DirectionFacing == DirectionValue.Right)
+            DirectionFacing = DirectionValue.Left;
+    }
+    public void TurnLeft()
+    {
+        DirectionFacing = DirectionValue.Left;
+    }
+    public void TurnRight()
+    {
+        DirectionFacing = DirectionValue.Right;
+    }
 }
