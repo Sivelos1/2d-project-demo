@@ -181,6 +181,7 @@ MonoBehaviour:
   npcCore: {fileID: 114035297536301910}
   deathEffect: {fileID: 1090581865135106, guid: 91346908862de074ca4449ce0b6596e8,
     type: 2}
+  InvincibilityFrames: 1
 --- !u!212 &212771986214789714
 SpriteRenderer:
   m_ObjectHideFlags: 1
