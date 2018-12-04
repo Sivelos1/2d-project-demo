@@ -21,7 +21,8 @@ GameObject:
   - component: {fileID: 4170486952186320}
   - component: {fileID: 212544543635365578}
   - component: {fileID: 95982507442504456}
-  - component: {fileID: 114711503459730500}
+  - component: {fileID: 114478124563703750}
+  - component: {fileID: 50869787892454034}
   m_Layer: 0
   m_Name: Smoke_Particle
   m_TagString: Untagged
@@ -36,12 +37,32 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1090581865135106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.27, y: 1.5, z: 0}
+  m_LocalPosition: {x: -4.09, y: 0.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50869787892454034
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1090581865135106}
+  m_BodyType: 0
+  m_Simulated: 0
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!95 &95982507442504456
 Animator:
   serializedVersion: 3
@@ -60,7 +81,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114711503459730500
+--- !u!114 &114478124563703750
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,9 +89,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1090581865135106}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 399f4b5115f55d649ba52f3626fc8072, type: 3}
+  m_Script: {fileID: 11500000, guid: e556f63118b372c4b95dbf37cc0c3e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyDelay: 0.6
 --- !u!212 &212544543635365578
 SpriteRenderer:
   m_ObjectHideFlags: 1

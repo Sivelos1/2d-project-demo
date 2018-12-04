@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class nonPlayerCharacterCore : MonoBehaviour {
 
+    [SerializeField]
     private string name;
-
 
 	// Use this for initialization
 	void Start () {

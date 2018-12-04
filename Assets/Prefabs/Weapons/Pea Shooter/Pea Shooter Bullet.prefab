@@ -99,10 +99,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6b6bae1b54a094b983addc934f74ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseDamage: 1
   TimeBeforeDecay: 5
   Physics: {fileID: 50668390781622078}
+  DestroyWhenOffScreen: 1
   HasGravity: 0
+  collidesWithGround: 1
+  collidesWithEnemies: 1
+  collidesWithProps: 1
   DisappearsOnCollision: 1
+  emissionsOnDestruction: []
+  isOnGround: 0
+  groundDetectTrigger: {fileID: 61426134387617460}
+  groundContactFilter:
+    useTriggers: 1
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 256
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
 --- !u!212 &212276825953550012
 SpriteRenderer:
   m_ObjectHideFlags: 1
