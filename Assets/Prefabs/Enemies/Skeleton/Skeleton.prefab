@@ -229,8 +229,11 @@ MonoBehaviour:
   Probability: 1
   PointTowardsCoordinateX: 0
   PointTowardsCoordinateY: 0
+  RandomAngle: 0
   TargetX: 0
   TargetY: 0
+  minimumAngle: 0
+  maximumAngle: 0
   IgnoreWeaponRotation: 0
   Angle: -30
   Speed: 750
@@ -332,13 +335,13 @@ MonoBehaviour:
   amountOfFlickersPerSecond: 0.1
   invincible: 0
   emissionsOnDeath:
-  - {fileID: 0}
+  - {fileID: 114297902835240966, guid: ba2181d363fb57b42aad10db0963ae8e, type: 2}
   - {fileID: 114035525725720872, guid: 3fdaf41f5487c284094db57d8a611cd6, type: 2}
   - {fileID: 114035525725720872, guid: 3fdaf41f5487c284094db57d8a611cd6, type: 2}
   - {fileID: 114035525725720872, guid: 3fdaf41f5487c284094db57d8a611cd6, type: 2}
-  - {fileID: 114601920312659206, guid: c9e9ab81746399143b11504d6fabf8ae, type: 2}
-  - {fileID: 114601920312659206, guid: c9e9ab81746399143b11504d6fabf8ae, type: 2}
-  - {fileID: 114601920312659206, guid: c9e9ab81746399143b11504d6fabf8ae, type: 2}
+  - {fileID: 114035525725720872, guid: 3fdaf41f5487c284094db57d8a611cd6, type: 2}
+  - {fileID: 114035525725720872, guid: 3fdaf41f5487c284094db57d8a611cd6, type: 2}
+  - {fileID: 114035525725720872, guid: 3fdaf41f5487c284094db57d8a611cd6, type: 2}
 --- !u!114 &114976785598475468
 MonoBehaviour:
   m_ObjectHideFlags: 1

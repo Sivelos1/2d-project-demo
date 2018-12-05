@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4107718314380102}
   - component: {fileID: 114035525725720872}
   m_Layer: 0
-  m_Name: +1 Coin Drop (Left)
+  m_Name: +1 Coin Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,8 +52,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emission: {fileID: 1358249625933194, guid: 69dc00e7627fb07428a1511176a26c46, type: 2}
-  EmissionPhysics: {fileID: 0}
+  EmissionPhysics: {fileID: 50101539319570430, guid: 69dc00e7627fb07428a1511176a26c46,
+    type: 2}
   Probability: 0.5
+  PointTowardsCoordinateX: 0
+  PointTowardsCoordinateY: 0
+  RandomAngle: 1
+  TargetX: 0
+  TargetY: 0
+  minimumAngle: -150
+  maximumAngle: 30
   IgnoreWeaponRotation: 1
   Angle: -150
   Speed: 0.05

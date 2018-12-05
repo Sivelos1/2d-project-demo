@@ -14,10 +14,10 @@ public class Emmission : MonoBehaviour {
     private float Probability = 1;
 
     [SerializeField]
-    private bool PointTowardsCoordinateX, PointTowardsCoordinateY;
+    private bool PointTowardsCoordinateX, PointTowardsCoordinateY, RandomAngle;
 
     [SerializeField]
-    private float TargetX, TargetY;
+    private float TargetX, TargetY, minimumAngle,maximumAngle;
 
     public Vector2 Trajectory
     {
@@ -29,6 +29,12 @@ public class Emmission : MonoBehaviour {
                 x = TargetX;
             if (PointTowardsCoordinateY == true)
                 y = TargetY;
+            if(RandomAngle == true)
+            {
+                Angle = Random.Range(minimumAngle, maximumAngle);
+                x = (Mathf.Cos(Angle) * Speed);
+                y = (Mathf.Sin(Angle) * Speed);
+            }
             return new Vector2(x, y);
         }
         private set
