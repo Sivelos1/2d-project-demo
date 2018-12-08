@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Emmission : MonoBehaviour {
+public class Emmission : MonoBehaviour
+{
 
     [SerializeField]
+    [Tooltip("The emission will spawn this GameObject when activated.")]
     public GameObject emission;
 
     [SerializeField]
     public Rigidbody2D EmissionPhysics;
 
     [SerializeField]
+    [Tooltip("If this value is less than 1, the emission will have a X chance to spawn when activated. Used for things like random enemy drops.")]
     private float Probability = 1;
 
     [SerializeField]
-    private bool PointTowardsCoordinateX, PointTowardsCoordinateY, RandomAngle;
+    private bool pointTowardsCoordinateX, pointTowardsCoordinateY;
 
     [SerializeField]
-    private float TargetX, TargetY, minimumAngle,maximumAngle;
+    private float targetX, targetY;
 
     public Vector2 Trajectory
     {
@@ -25,16 +28,10 @@ public class Emmission : MonoBehaviour {
         {
             float x = (Mathf.Cos(Angle) * Speed);
             float y = (Mathf.Sin(Angle) * Speed);
-            if (PointTowardsCoordinateX == true)
-                x = TargetX;
-            if (PointTowardsCoordinateY == true)
-                y = TargetY;
-            if(RandomAngle == true)
-            {
-                Angle = Random.Range(minimumAngle, maximumAngle);
-                x = (Mathf.Cos(Angle) * Speed);
-                y = (Mathf.Sin(Angle) * Speed);
-            }
+            if (pointTowardsCoordinateX == true)
+                x = targetX;
+            if (pointTowardsCoordinateY == true)
+                y = targetY;
             return new Vector2(x, y);
         }
         private set
@@ -44,7 +41,7 @@ public class Emmission : MonoBehaviour {
     }
 
     [SerializeField]
-    public bool IgnoreWeaponRotation = false;
+    public bool bulletIgnoresWeaponRotation = false;
 
     [SerializeField]
     private float Angle;

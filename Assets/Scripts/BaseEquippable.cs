@@ -8,20 +8,21 @@ public enum WeaponType
     Secondary
 }
 
-public class BaseEquippable : MonoBehaviour {
+public class BaseEquippable : MonoBehaviour
+{
     [SerializeField]
+    [Tooltip("The weapon's name as shown to the player.")]
     private string name = "N/A";
 
     [SerializeField]
     private string InputKey = "N/A";
-
-    [SerializeField]
+    
     public Transform bulletOrigin;
 
     [SerializeField]
-    private bool onlyTriggersOnButtonDown = true;
+    private bool weaponOnlyFiresOnceWhenButtonIsPressed = true;
 
-    private bool fire;
+    private bool isFiring;
 
     [SerializeField]
     private WeaponType weaponType;
@@ -33,7 +34,8 @@ public class BaseEquippable : MonoBehaviour {
     private List<Emmission> emissions = new List<Emmission>();
 
 	// Use this for initialization
-	void Start () {
+	private void Start ()
+    {
         user = GetComponentInParent<PlayerCharacter>();
         if(user != null)
         {
@@ -42,10 +44,10 @@ public class BaseEquippable : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
         AlignWeapon();
         GetInput();
-        if (fire == true)
+        if (isFiring == true)
         {
             Fire();
         }
@@ -63,43 +65,36 @@ public class BaseEquippable : MonoBehaviour {
         }
 
     }
-
-    private void FixedUpdate()
-    {
-        
-    }
-
+    
     public void GetInput()
     {
-        if(onlyTriggersOnButtonDown == true)
+        if(weaponOnlyFiresOnceWhenButtonIsPressed)
         {
-            fire = Input.GetButtonDown(InputKey);
+            isFiring = Input.GetButtonDown(InputKey);
         }
         else
         {
-            fire = Input.GetButton(InputKey);
+            isFiring = Input.GetButton(InputKey);
         }
     }
 
     public void Fire()
     {
         Debug.Log("Firing!");
-        foreach (Emmission g in emissions)
+        foreach (Emmission emm in emissions)
         {
-            g.GetPhysics();
+            emm.GetPhysics();
             Rigidbody2D bullet;
-            bullet = Instantiate(g.EmissionPhysics, bulletOrigin.position, bulletOrigin.rotation) as Rigidbody2D;
-            if (user.IsFacingLeft() && g.IgnoreWeaponRotation == false)
+            bullet = Instantiate(emm.EmissionPhysics, bulletOrigin.position, bulletOrigin.rotation) as Rigidbody2D;
+            if (user.IsFacingLeft() && emm.bulletIgnoresWeaponRotation == false)
             {
-                bullet.AddForce(-g.Trajectory);
+                bullet.AddForce(-emm.Trajectory);
             }
             else
             {
-                bullet.AddForce(g.Trajectory);
+                bullet.AddForce(emm.Trajectory);
             }
-            
         }
-
     }
 
     public PlayerCharacter GetUser()

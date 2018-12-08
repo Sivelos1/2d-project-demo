@@ -104,7 +104,7 @@ public class SkeletonBehavior : MonoBehaviour {
     private void ProjectileHandler(Collider2D collision)
     {
         Bullet bullet = collision.GetComponent<Bullet>();
-        if(bullet.DisappearsOnCollision == true)
+        if(bullet.bulletDisappearsUponCollision == true)
         {
             Destroy(collision.gameObject);
         }

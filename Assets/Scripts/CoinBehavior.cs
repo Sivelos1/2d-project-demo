@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoinBehavior : MonoBehaviour {
+public class CoinBehavior : MonoBehaviour
+{
 
     [SerializeField]
+    [Tooltip("Gives the player X points upon collecting this coin. Default value is 1.")]
     private int Worth = 1;
 
     [SerializeField]
+    [Tooltip("Gives the coin gravity, instead of floaing in mid-air.")]
     private bool HasGravity;
 
     private Rigidbody2D physics;
@@ -23,7 +26,8 @@ public class CoinBehavior : MonoBehaviour {
     private BoxCollider2D boxCollider;
 
     // Use this for initialization
-    void Start() {
+    private void Start()
+    {
         sprite = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
         GotCoin = false;
@@ -52,8 +56,6 @@ public class CoinBehavior : MonoBehaviour {
                 GotCoin = true;
                 Destroy(gameObject, sound.clip.length);
             }
-            
         }
     }
-
 }
