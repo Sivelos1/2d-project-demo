@@ -102,12 +102,12 @@ MonoBehaviour:
   baseDamage: 1
   TimeBeforeDecay: 5
   Physics: {fileID: 50668390781622078}
-  DestroyWhenOffScreen: 1
+  destroysSelfWhenInvisible: 1
   HasGravity: 0
-  collidesWithGround: 1
-  collidesWithEnemies: 1
-  collidesWithProps: 1
-  DisappearsOnCollision: 1
+  bulletCollidesWithGround: 1
+  bulletCollidesWithEnemies: 1
+  bulletCollidesWithProps: 1
+  bulletDisappearsUponCollision: 1
   emissionsOnDestruction: []
   isOnGround: 0
   groundDetectTrigger: {fileID: 61426134387617460}
