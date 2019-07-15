@@ -30,7 +30,6 @@ public class BulletInteractivity : MonoBehaviour {
     private float damageMultiplier = 1;
 
     [SerializeField]
-
     [Tooltip("Will the object die upon reaching zero or less HP?")]
     private bool canDie;
 
@@ -41,6 +40,16 @@ public class BulletInteractivity : MonoBehaviour {
     [SerializeField]
     [Tooltip("The Collider2D that can be hit by bullets.")]
     private Collider2D affectedCollider;
+
+    [SerializeField]
+    [Tooltip("The sound that will be played when the collider is hit by a bullet.")]
+    private AudioClip onHitSound;
+
+    [SerializeField]
+    [Tooltip("The sound that will be played when the collider dies.")]
+    private AudioClip onDeathSound;
+
+    private AudioSource sound;
 
     [SerializeField]
     [Tooltip("How long the object will stay invincible after being hit by a bullet.")]
@@ -69,6 +78,7 @@ public class BulletInteractivity : MonoBehaviour {
     // Use this for initialization
     private void Start ()
     {
+        sound = GetComponent<AudioSource>();
         if(emissionsOnDeath == null)
         {
             emissionsOnDeath = new List<Emmission>();
@@ -143,6 +153,8 @@ public class BulletInteractivity : MonoBehaviour {
     {
         Dying = true;
         Transform emmisionOrigin = gameObject.transform;
+        sound.clip = onDeathSound;
+        sound.Play();
         spriteRenderer.enabled = false;
         rigidBody.velocity = Vector2.zero;
         rigidBody.gravityScale = 0;
@@ -171,6 +183,8 @@ public class BulletInteractivity : MonoBehaviour {
         {
             if(canBeHurt == true && invincible == false)
             {
+                sound.clip = onHitSound;
+                sound.Play();
                 Bullet bullet = collision.gameObject.GetComponent<Bullet>();
                 if (bullet == null)
                 {
