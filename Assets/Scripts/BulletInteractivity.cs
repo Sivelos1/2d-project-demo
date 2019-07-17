@@ -49,6 +49,7 @@ public class BulletInteractivity : MonoBehaviour {
     [Tooltip("The sound that will be played when the collider dies.")]
     private AudioClip onDeathSound;
 
+    [SerializeField]
     private AudioSource sound;
 
     [SerializeField]
@@ -75,10 +76,14 @@ public class BulletInteractivity : MonoBehaviour {
 
     private bool Dying;
 
+    private void Awake()
+    {
+        sound = GetComponent<AudioSource>();
+    }
+
     // Use this for initialization
     private void Start ()
     {
-        sound = GetComponent<AudioSource>();
         if(emissionsOnDeath == null)
         {
             emissionsOnDeath = new List<Emmission>();
@@ -109,7 +114,7 @@ public class BulletInteractivity : MonoBehaviour {
 
     private void ManageInvincibility()
     {
-        if(invincible == true)
+        if(invincible)
         {
             invincibilityTimer += Time.deltaTime;
             if (invincibilityTimer >= invincibilityFramesInSeconds)
@@ -126,7 +131,7 @@ public class BulletInteractivity : MonoBehaviour {
 
     private void MakeSureObjectDoesntStayInvisible()
     {
-        if (invincible != true && spriteRenderer.enabled == false)
+        if (!invincible && !spriteRenderer.enabled)
         {
             spriteRenderer.enabled = true;
         }
@@ -135,11 +140,11 @@ public class BulletInteractivity : MonoBehaviour {
     private void ModifyHP(float deltaHP)
     {
         currentHitPoints += (deltaHP * damageMultiplier);
-        if(currentHitPoints <= 0 && canDie == true)
+        if(currentHitPoints <= 0 && canDie)
         {
             Die();
         }
-        if(invincibilityFramesInSeconds > 0 && (deltaHP * damageMultiplier) <= 0 && Dying == false)
+        if(invincibilityFramesInSeconds > 0 && (deltaHP * damageMultiplier) <= 0 && !Dying)
         {
             invincible = true;
         }
@@ -151,10 +156,14 @@ public class BulletInteractivity : MonoBehaviour {
 
     private void Die()
     {
+        if (sound)
+        {
+            sound.clip = onDeathSound;
+            sound.Play();
+        }
         Dying = true;
         Transform emmisionOrigin = gameObject.transform;
-        sound.clip = onDeathSound;
-        sound.Play();
+        
         spriteRenderer.enabled = false;
         rigidBody.velocity = Vector2.zero;
         rigidBody.gravityScale = 0;
@@ -181,10 +190,13 @@ public class BulletInteractivity : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            if(canBeHurt == true && invincible == false)
+            if(canBeHurt && !invincible)
             {
-                sound.clip = onHitSound;
-                sound.Play();
+                if (sound)
+                {
+                    sound.clip = onHitSound;
+                    sound.Play();
+                }
                 Bullet bullet = collision.gameObject.GetComponent<Bullet>();
                 if (bullet == null)
                 {
@@ -203,8 +215,13 @@ public class BulletInteractivity : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            if (canBeHurt == true && invincible == false)
+            if (canBeHurt && !invincible)
             {
+                if (sound)
+                {
+                    sound.clip = onHitSound;
+                    sound.Play();
+                }
                 Bullet bullet = collision.gameObject.GetComponent<Bullet>();
                 if (bullet == null)
                 {
