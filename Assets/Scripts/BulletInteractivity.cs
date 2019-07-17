@@ -48,8 +48,7 @@ public class BulletInteractivity : MonoBehaviour {
     [SerializeField]
     [Tooltip("The sound that will be played when the collider dies.")]
     private AudioClip onDeathSound;
-
-    [SerializeField]
+    
     private AudioSource sound;
 
     [SerializeField]
@@ -185,32 +184,7 @@ public class BulletInteractivity : MonoBehaviour {
         }
         Destroy(gameObject, destructionDelayBeforeDeath);
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Bullet"))
-        {
-            if(canBeHurt && !invincible)
-            {
-                if (sound)
-                {
-                    sound.clip = onHitSound;
-                    sound.Play();
-                }
-                Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-                if (bullet == null)
-                {
-
-                    ModifyHP(-1);
-                }
-                else
-                {
-                    ModifyHP(-bullet.GetBaseDamage());
-                }
-            }
-        }
-    }
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))
