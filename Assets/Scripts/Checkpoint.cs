@@ -8,11 +8,17 @@ public class Checkpoint : MonoBehaviour {
     [SerializeField]
     private bool CheckPointActivated = false;
 
+    [SerializeField]
+    private AudioClip onActivationSound;
+
+    private AudioSource sound;
+
     private Animator animator;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
+        sound = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,6 +31,11 @@ public class Checkpoint : MonoBehaviour {
             }
             else
             {
+                if (sound)
+                {
+                    sound.clip = onActivationSound;
+                    sound.Play();
+                }
                 Debug.Log("The player activated the checkpoint!");
                 PlayerCharacter player = collision.GetComponent<PlayerCharacter>();
                 player.SetCurrentCheckpoint(this);

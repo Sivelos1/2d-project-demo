@@ -293,7 +293,7 @@ public class PlayerCharacter : MonoBehaviour {
         respawnTimer = 0;
         if (currentCheckPoint == null)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene("gameOver");
         }
         else
         {
