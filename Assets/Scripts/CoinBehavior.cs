@@ -51,6 +51,11 @@ public class CoinBehavior : MonoBehaviour
             {
                 Debug.Log("Ding! The player picked up " + Worth + " coin(s)!");
                 sound.Play();
+                PlayerCharacter player = collision.gameObject.GetComponent<PlayerCharacter>();
+                if (player)
+                {
+                    player.SetCoin(Worth);
+                }
                 sprite.enabled = false;
                 boxCollider.isTrigger = true;
                 GotCoin = true;

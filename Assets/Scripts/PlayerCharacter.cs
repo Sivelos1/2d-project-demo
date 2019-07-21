@@ -313,7 +313,12 @@ public class PlayerCharacter : MonoBehaviour {
         currentCheckPoint = newCurrentCheckpoint;
     }
 
-    public void GetCoin(int amount)
+    public int GetCoin()
+    {
+        return Coins;
+    }
+
+    public void SetCoin(int amount)
     {
         Coins += amount;
     }
