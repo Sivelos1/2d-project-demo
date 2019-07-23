@@ -25,6 +25,7 @@ public class titleScreenController : MonoBehaviour
 
     public void GoToFirstScene()
     {
+        Global.SetCoins(0);
         SceneManager.LoadScene("level1");
     }
 }

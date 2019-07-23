@@ -98,7 +98,7 @@ public class PlayerCharacter : MonoBehaviour {
         rigidBody2DInstance = GetComponent<Rigidbody2D>();
         collision = GetComponent<BoxCollider2D>();
         equip = new BaseEquippable();
-        Debug.Log("dude fuckin stellar lol");
+        Coins = Global.GetCoins();
     }
     // Update is called once per frame
     private void Update() {

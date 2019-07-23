@@ -31,6 +31,12 @@ public class Transfer : MonoBehaviour {
     [SerializeField]
     private Transfer Target;
 
+    [SerializeField]
+    private AudioClip onUseSound;
+
+    [SerializeField]
+    private AudioSource sound;
+
     private PlayerCharacter user;
 
     [SerializeField]
@@ -50,6 +56,7 @@ public class Transfer : MonoBehaviour {
 
     private void Start()
     {
+        sound = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
     }
 
@@ -113,6 +120,11 @@ public class Transfer : MonoBehaviour {
     private void ActivateTransfer()
     {
         OpenDoor();
+        if (sound && onUseSound)
+        {
+            sound.clip = onUseSound;
+            sound.Play();
+        }
         MovePlayerToTarget();
         if(Target != null)
         {
@@ -130,6 +142,11 @@ public class Transfer : MonoBehaviour {
                 return;
             }
             Debug.Log("The player activated the door.");
+            PlayerCharacter player = user.GetComponent<PlayerCharacter>();
+            if (player)
+            {
+                Global.SetCoins(player.GetCoin());
+            }
             SceneManager.LoadScene(TargetScene);
             if (RoundTrip == false)
             {
