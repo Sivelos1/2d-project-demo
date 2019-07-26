@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class titleScreenController : MonoBehaviour
+public class titleScreenController : MonoBehaviour, IMoveHandler
 {
     [SerializeField]
     [Tooltip("The canvas the intro is bound to.")]
     private GameObject introCanvas;
 
     [SerializeField]
-    private Animator introAnimator;
-
-    [SerializeField]
     [Tooltip("The text field to write the intro's text blurbs to.")]
     private Text textField;
+
+    [SerializeField]
+    [Tooltip("The SpriteRenderer that renders the intro slides.")]
+    private SpriteRenderer introSlide;
 
     [SerializeField]
     [Tooltip("The blurbs of text, in numerical order, displayed by the intro.")]
@@ -30,11 +33,19 @@ public class titleScreenController : MonoBehaviour
     private int introIndex;
 
     [SerializeField]
-    [Tooltip("The amount of time, in frames, before the next slide of the intro pops up.")]
+    [Tooltip("The amount of time, in seconds, before the next slide of the intro pops up.")]
     private float introTransitionDelay;
 
     [SerializeField]
-    [Tooltip("The amount of time, in frames, the game waits to display the intro if no input is made during that time.")]
+    [Tooltip("The current time of the intro transitioning.")]
+    private float introTransitionTimer = 0;
+
+    [SerializeField]
+    [Tooltip("Is the intro playing?")]
+    private bool isInIntro = false;
+
+    [SerializeField]
+    [Tooltip("The amount of time, in seconds, the game waits to display the intro if no input is made during that time.")]
     private float timeBeforeIntro;
 
     [SerializeField]
@@ -63,12 +74,31 @@ public class titleScreenController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (CheckForInput())
-        {
-            currentIntroTime = 0;
-        }
+        
         currentIntroTime += Time.deltaTime;
-
+        if(Mathf.Round(currentIntroTime) == timeBeforeIntro)
+        {
+            StartIntro();
+        }
+        else if(Mathf.Round(currentIntroTime) > timeBeforeIntro)
+        {
+            if (CheckForInput())
+            {
+                Debug.Log("Input made!");
+            }
+            introTransitionTimer += Time.deltaTime;
+            textField.text = introText[introIndex];
+            introSlide.sprite = introPictures[introIndex];
+            if (Mathf.Round(introTransitionTimer) >= introTransitionDelay)
+            {
+                introIndex++;
+                if (introIndex >= introPictures.Count)
+                {
+                    EndIntro();
+                }
+                introTransitionTimer = 0;
+            }
+        }
         
     }
 
@@ -93,17 +123,50 @@ public class titleScreenController : MonoBehaviour
 
     public void GoToFirstScene()
     {
-        Global.SetCoins(0);
-        SceneManager.LoadScene("level1");
+        if(isInIntro)
+        {
+            EndIntro();
+        }
+        else
+        {
+            Global.SetCoins(0);
+            SceneManager.LoadScene("level1");
+        }
     }
 
     public void StartIntro()
     {
+        isInIntro = true;
+        introCanvas.SetActive(true);
+        textField.text = introText[0];
+        introSlide.sprite = introPictures[0];
 
     }
 
     public void EndIntro()
     {
+        isInIntro = false;
+        introIndex = 0;
+        introTransitionTimer = 0;
+        currentIntroTime = 0;
         introCanvas.SetActive(false);
+    }
+
+    void onEnable()
+    {
+
+    }
+
+    void onDisable()
+    {
+
+    }
+
+    public void OnMove(AxisEventData eventData)
+    {
+        if (isInIntro)
+        {
+            EndIntro();
+        }
     }
 }

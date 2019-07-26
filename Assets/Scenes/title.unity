@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 280426260}
   - component: {fileID: 280426259}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Canvas (Menu)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -830,7 +830,7 @@ GameObject:
   - component: {fileID: 682976300}
   - component: {fileID: 682976301}
   m_Layer: 0
-  m_Name: intro_0
+  m_Name: Intro Slide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13345,25 +13345,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introCanvas: {fileID: 1676160253}
-  introAnimator: {fileID: 1676160254}
   textField: {fileID: 1790196620}
+  introSlide: {fileID: 682976301}
   introText:
   - One halloween night...
   - The monstrous King Candy Apple
   - Stole the chocolate coins from the
   - peaceful countryside.
-  - ' Fleeing to his castle, only one'
+  - Fleeing to his castle, only one
   - has the courage to pursue him.
   - This'll be a night to remember...
   introPictures:
   - {fileID: 21300000, guid: d064f23ca899cd24bb299ebd3c6a08a3, type: 3}
   - {fileID: 21300002, guid: d064f23ca899cd24bb299ebd3c6a08a3, type: 3}
   - {fileID: 21300004, guid: d064f23ca899cd24bb299ebd3c6a08a3, type: 3}
+  - {fileID: 21300004, guid: d064f23ca899cd24bb299ebd3c6a08a3, type: 3}
+  - {fileID: 21300006, guid: d064f23ca899cd24bb299ebd3c6a08a3, type: 3}
   - {fileID: 21300006, guid: d064f23ca899cd24bb299ebd3c6a08a3, type: 3}
   - {fileID: 21300008, guid: d064f23ca899cd24bb299ebd3c6a08a3, type: 3}
   introIndex: 0
-  introTransitionDelay: 120
-  timeBeforeIntro: 300
+  introTransitionDelay: 5
+  introTransitionTimer: 0
+  isInIntro: 0
+  timeBeforeIntro: 5
   currentIntroTime: 0
   buttonsToCheck:
   - Fire1
@@ -13614,7 +13618,6 @@ GameObject:
   - component: {fileID: 1676160257}
   - component: {fileID: 1676160256}
   - component: {fileID: 1676160255}
-  - component: {fileID: 1676160254}
   m_Layer: 5
   m_Name: Canvas (Intro)
   m_TagString: Untagged
@@ -13622,25 +13625,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &1676160254
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676160253}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1a6ee82d43a4b494aa6aa66d0973de97, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1676160255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13833,12 +13817,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introCanvas: {fileID: 0}
-  introAnimator: {fileID: 0}
   textField: {fileID: 0}
+  introSlide: {fileID: 0}
   introText: []
   introPictures: []
   introIndex: 0
   introTransitionDelay: 0
+  introTransitionTimer: 0
+  isInIntro: 0
   timeBeforeIntro: 0
   currentIntroTime: 0
   buttonsToCheck: []
