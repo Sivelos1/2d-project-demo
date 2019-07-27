@@ -75,6 +75,8 @@ public class PlayerCharacter : MonoBehaviour {
 
     private bool Dying = false;
 
+    private bool trueDeath = false;
+
     private Transfer targetDoor;
 
     private bool EnteringDoor;
@@ -86,11 +88,19 @@ public class PlayerCharacter : MonoBehaviour {
 
     private bool DisableInput = false;
 
+    [SerializeField]
+    [Tooltip("The timer. If this hits zero, the player is instantly killed without respawning.")]
+    private float gameTime;
+
+    [SerializeField]
+    [Tooltip("Is the timer active?")]
+    private bool isCountingTimer;
+
 
 
 
     // Use this for initialization
-    private void Start () {
+    private void Start() {
         sound = GetComponent<AudioSource>();
         sprite = GetComponent<SpriteRenderer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -99,6 +109,8 @@ public class PlayerCharacter : MonoBehaviour {
         collision = GetComponent<BoxCollider2D>();
         equip = new BaseEquippable();
         Coins = Global.GetCoins();
+        gameTime = Global.GetTimer();
+        isCountingTimer = true;
     }
     // Update is called once per frame
     private void Update() {
@@ -129,7 +141,7 @@ public class PlayerCharacter : MonoBehaviour {
         else
         {
             UpdateIsOnGround();
-            if(DisableInput == false)
+            if (DisableInput == false)
             {
                 GetInput();
                 HandleJumpInput();
@@ -141,11 +153,12 @@ public class PlayerCharacter : MonoBehaviour {
                 Death();
             }
         }
-        
+
 
     }
     private void FixedUpdate()
     {
+        ManageTimer();
         UpdatePhysicsMaterial();
         UpdateDirectionFacing();
         Move();
@@ -164,7 +177,7 @@ public class PlayerCharacter : MonoBehaviour {
     }
     private void UpdateDirectionFacing()
     {
-        if(horizontalInput > 0)
+        if (horizontalInput > 0)
         {
             directionFacing = Direction.right;
         }
@@ -175,7 +188,7 @@ public class PlayerCharacter : MonoBehaviour {
     }
     private void UpdatePhysicsMaterial()
     {
-        if(Mathf.Abs(horizontalInput) > 0)
+        if (Mathf.Abs(horizontalInput) > 0)
         {
             // TODO moving physics material
             collision.sharedMaterial = playerMovingPhysicsMaterial;
@@ -204,11 +217,11 @@ public class PlayerCharacter : MonoBehaviour {
         if (IsDead == true)
             return;
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        
+
     }
     private void Move()
     {
-        if(IsFacingLeft() == true)
+        if (IsFacingLeft() == true)
         {
             spriteRenderer.flipX = true;
         }
@@ -218,7 +231,7 @@ public class PlayerCharacter : MonoBehaviour {
         }
         if (IsDead == true)
             return;
-        if(isOnGround == false)
+        if (isOnGround == false)
         {
             rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
         }
@@ -245,7 +258,7 @@ public class PlayerCharacter : MonoBehaviour {
 
     private void Death()
     {
-        if(Dying == false)
+        if (Dying == false)
         {
             sound.clip = deathSound;
             sound.Play();
@@ -254,12 +267,12 @@ public class PlayerCharacter : MonoBehaviour {
             if (directionFacing == Direction.left)
             {
                 rigidBody2DInstance.AddForce(new Vector2(5, 10), ForceMode2D.Impulse);
-                
+
             }
             else
             {
                 rigidBody2DInstance.AddForce(new Vector2(-5, 10), ForceMode2D.Impulse);
-                
+
             }
             collision.isTrigger = false;
             Dying = true;
@@ -267,23 +280,52 @@ public class PlayerCharacter : MonoBehaviour {
         }
         else
         {
-            if(isOnGround == true)
+            if (isOnGround == true)
             {
-                
+
                 respawnTimer += Time.deltaTime;
                 if (isOnGround && respawnTimer >= RespawnDelay)
                 {
                     Respawn();
                 }
             }
-            
+
         }
-        
+
+    }
+
+    public void SetTimer(float f)
+    {
+        gameTime = f;
+    }
+
+    public float GetTimer()
+    {
+        return gameTime;
+    }
+
+    private void ManageTimer()
+    {
+        if (isCountingTimer)
+        {
+            gameTime -= Time.deltaTime;
+            if(gameTime <= 0)
+            {
+                TrueDie();
+            }
+        }
     }
 
     public void Die()
     {
+        isCountingTimer = false;
         IsDead = true;
+    }
+
+    public void TrueDie()
+    {
+        trueDeath = true;
+        Die();
     }
 
     public void Respawn()
@@ -291,7 +333,7 @@ public class PlayerCharacter : MonoBehaviour {
         IsDead = false;
         Dying = false;
         respawnTimer = 0;
-        if (currentCheckPoint == null)
+        if (currentCheckPoint == null || trueDeath)
         {
             SceneManager.LoadScene("gameOver");
         }
@@ -300,7 +342,8 @@ public class PlayerCharacter : MonoBehaviour {
             rigidBody2DInstance.velocity = Vector2.zero;
             transform.position = currentCheckPoint.transform.position;
             SyncUpAnimations();
-            
+            isCountingTimer = true;
+
         }
         
     }

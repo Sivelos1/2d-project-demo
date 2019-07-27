@@ -130,6 +130,7 @@ public class titleScreenController : MonoBehaviour, IMoveHandler
         else
         {
             Global.SetCoins(0);
+            Global.SetTimer(120);
             SceneManager.LoadScene("level1");
         }
     }
@@ -151,17 +152,7 @@ public class titleScreenController : MonoBehaviour, IMoveHandler
         currentIntroTime = 0;
         introCanvas.SetActive(false);
     }
-
-    void onEnable()
-    {
-
-    }
-
-    void onDisable()
-    {
-
-    }
-
+    
     public void OnMove(AxisEventData eventData)
     {
         if (isInIntro)

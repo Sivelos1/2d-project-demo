@@ -146,6 +146,7 @@ public class Transfer : MonoBehaviour {
             if (player)
             {
                 Global.SetCoins(player.GetCoin());
+                Global.SetTimer(player.GetTimer());
             }
             SceneManager.LoadScene(TargetScene);
             if (RoundTrip == false)
