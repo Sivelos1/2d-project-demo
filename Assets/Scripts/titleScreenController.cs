@@ -64,6 +64,9 @@ public class titleScreenController : MonoBehaviour, IMoveHandler
     [Tooltip("The object used as the cursor.")]
     private GameObject cursor;
 
+    [SerializeField]
+    private bool debug;
+
     void Start()
     {
         introIndex = 0;
@@ -72,20 +75,28 @@ public class titleScreenController : MonoBehaviour, IMoveHandler
     }
     
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         
         currentIntroTime += Time.deltaTime;
-        if(Mathf.Round(currentIntroTime) == timeBeforeIntro)
+        if (CheckForInput())
+        {
+            if (isInIntro)
+            {
+                EndIntro();
+            }
+            else
+            {
+                currentIntroTime = 0;
+            }
+        }
+        if (Mathf.Round(currentIntroTime) == timeBeforeIntro)
         {
             StartIntro();
         }
         else if(Mathf.Round(currentIntroTime) > timeBeforeIntro)
         {
-            if (CheckForInput())
-            {
-                Debug.Log("Input made!");
-            }
+            
             introTransitionTimer += Time.deltaTime;
             textField.text = introText[introIndex];
             introSlide.sprite = introPictures[introIndex];
@@ -102,19 +113,34 @@ public class titleScreenController : MonoBehaviour, IMoveHandler
         
     }
 
+    private void DebugPrint(string message)
+    {
+        if (debug)
+        {
+            Debug.Log(message);
+        }
+    }
+
     private bool CheckForInput()
     {
-        for (int i = 0; i < buttonsToCheck.Count - 1; i++)
+        DebugPrint("Beginning input check.");
+        DebugPrint("Checking for input in the buttons... "+buttonsToCheck.Count+" buttons found.");
+        for (int i = 0; i < buttonsToCheck.Count; i++)
         {
+            DebugPrint("Checking for input on button "+buttonsToCheck[i]+"...");
             if (Input.GetButton(buttonsToCheck[i]))
             {
+                DebugPrint("Input on button "+buttonsToCheck[i]+" found!");
                 return true;
             }
         }
-        for (int i = 0; i < axesToCheck.Count - 1; i++)
+        DebugPrint("Checking for input in the axes... " + axesToCheck.Count + " axes found.");
+        for (int i = 0; i < axesToCheck.Count; i++)
         {
+            DebugPrint("Checking for input on axis " + axesToCheck[i] + "...");
             if (Input.GetAxisRaw(axesToCheck[i]) != 0)
             {
+                DebugPrint("Input on axis " + axesToCheck[i] + " found!");
                 return true;
             }
         }
