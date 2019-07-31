@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerCharacter : MonoBehaviour {
+public class PlayerCharacter : MonoBehaviour
+{
     private enum Direction
     {
         left,
@@ -49,7 +50,7 @@ public class PlayerCharacter : MonoBehaviour {
     private float verticalInput;
 
     [SerializeField]
-    private PhysicsMaterial2D playerMovingPhysicsMaterial, playerStoppingPhysicsMaterial;
+    private PhysicsMaterial2D playerMovingPhysicsMaterial, playerStoppingPhysicsMaterial, playerFallingPhysicsMaterial;
 
     [SerializeField]
     private float horizontalAcceleration = 5;
@@ -100,7 +101,8 @@ public class PlayerCharacter : MonoBehaviour {
 
 
     // Use this for initialization
-    private void Start() {
+    private void Start()
+    {
         sound = GetComponent<AudioSource>();
         sprite = GetComponent<SpriteRenderer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -113,10 +115,11 @@ public class PlayerCharacter : MonoBehaviour {
         isCountingTimer = true;
     }
     // Update is called once per frame
-    private void Update() {
+    private void Update()
+    {
         if (EnteringDoor == true)
         {
-            if (IsFacingLeft() == true)
+            if (IsFacingLeft() == true)// NOTE this could be simplified by saying :  spriteRenderer.flipX = IsFacingLeft();
             {
                 spriteRenderer.flipX = true;
             }
@@ -126,7 +129,7 @@ public class PlayerCharacter : MonoBehaviour {
             }
             if (IsDead == true)
                 return;
-            if (isOnGround == false)
+            if (isOnGround == false)// NOTE this if condition is basically doing the same thing in both cases.
             {
                 rigidBody2DInstance.AddForce(new Vector2((horizontalAcceleration * horizontalInput), 0), ForceMode2D.Force);
             }
@@ -165,6 +168,7 @@ public class PlayerCharacter : MonoBehaviour {
     }
     private void UpdateIsOnGround()
     {
+        // TODO ground check needs to be only for grounds that are under the player character [Problem with platforms that are on the left/right of the player]
         isOnGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundCollisionResults) > 0;
     }
     private void SyncUpAnimations()
@@ -191,7 +195,8 @@ public class PlayerCharacter : MonoBehaviour {
         if (Mathf.Abs(horizontalInput) > 0)
         {
             // TODO moving physics material
-            collision.sharedMaterial = playerMovingPhysicsMaterial;
+            // NOTE if the player isn't grounded => remove friction by assigning a new falling physics material
+            collision.sharedMaterial = isOnGround ? playerMovingPhysicsMaterial : playerFallingPhysicsMaterial;
         }
         else
         {
@@ -309,7 +314,7 @@ public class PlayerCharacter : MonoBehaviour {
         if (isCountingTimer)
         {
             gameTime -= Time.deltaTime;
-            if(gameTime <= 0)
+            if (gameTime <= 0)
             {
                 TrueDie();
             }
@@ -345,7 +350,7 @@ public class PlayerCharacter : MonoBehaviour {
             isCountingTimer = true;
 
         }
-        
+
     }
     public bool GetIsDeadValue()
     {
