@@ -130,7 +130,7 @@ public class BulletInteractivity : MonoBehaviour {
 
     private void MakeSureObjectDoesntStayInvisible()
     {
-        if (!invincible && !spriteRenderer.enabled)
+        if (!invincible && !spriteRenderer.enabled && !Dying)
         {
             spriteRenderer.enabled = true;
         }
@@ -162,7 +162,6 @@ public class BulletInteractivity : MonoBehaviour {
         }
         Dying = true;
         Transform emmisionOrigin = gameObject.transform;
-        
         spriteRenderer.enabled = false;
         rigidBody.velocity = Vector2.zero;
         rigidBody.gravityScale = 0;

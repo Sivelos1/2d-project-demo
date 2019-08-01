@@ -330,6 +330,7 @@ public class PlayerCharacter : MonoBehaviour
     public void TrueDie()
     {
         trueDeath = true;
+        Global.SetTimer(-1);
         Die();
     }
 

@@ -61,8 +61,8 @@ public class titleScreenController : MonoBehaviour, IMoveHandler
     private List<string> axesToCheck = new List<string>();
 
     [SerializeField]
-    [Tooltip("The object used as the cursor.")]
-    private GameObject cursor;
+    [Tooltip("The AudioSource playing the title BGM.")]
+    private AudioSource sound;
 
     [SerializeField]
     private bool debug;
@@ -70,6 +70,7 @@ public class titleScreenController : MonoBehaviour, IMoveHandler
     void Start()
     {
         introIndex = 0;
+        sound = GetComponent<AudioSource>();
         currentIntroTime = 0;
         introCanvas.SetActive(false);
     }
@@ -172,6 +173,10 @@ public class titleScreenController : MonoBehaviour, IMoveHandler
 
     public void EndIntro()
     {
+        if (sound && !sound.isPlaying)
+        {
+            sound.Play();
+        }
         isInIntro = false;
         introIndex = 0;
         introTransitionTimer = 0;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EndScreenManager : MonoBehaviour
 {
@@ -17,6 +18,17 @@ public class EndScreenManager : MonoBehaviour
     private AudioClip stinger;
 
     [SerializeField]
+    [Tooltip("The string to display when the game ends.")]
+    private string gameOverText;
+
+    [SerializeField]
+    [Tooltip("The string to display when the timer reaches 0.")]
+    private string timeOutText;
+
+    [SerializeField]
+    private Text textField;
+
+    [SerializeField]
     private float screenTime = 0;
 
     private AudioSource sound;
@@ -24,6 +36,17 @@ public class EndScreenManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(SceneManager.GetActiveScene().name == "gameOver")
+        {
+            if(Global.GetTimer() <= 0)
+            {
+                textField.text = timeOutText;
+            }
+            else
+            {
+                textField.text = gameOverText;
+            }
+        }
         sound = GetComponent<AudioSource>();
         screenTime = 0;
         if(sound && stinger)

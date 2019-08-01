@@ -12974,14 +12974,14 @@ MonoBehaviour:
   introTransitionDelay: 5
   introTransitionTimer: 0
   isInIntro: 0
-  timeBeforeIntro: 5
+  timeBeforeIntro: 120
   currentIntroTime: 0
   buttonsToCheck:
   - Fire1
   axesToCheck:
   - Horizontal
   - Vertical
-  cursor: {fileID: 0}
+  sound: {fileID: 0}
   debug: 0
 --- !u!82 &1487156034
 AudioSource:
