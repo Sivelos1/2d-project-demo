@@ -164,6 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Worth: 1
   HasGravity: 0
+  onPickUpSound: {fileID: 8300000, guid: 23383c8c8c3248d4680d18efe0f61d00, type: 3}
 --- !u!82 &82400762500681670
 AudioSource:
   m_ObjectHideFlags: 0

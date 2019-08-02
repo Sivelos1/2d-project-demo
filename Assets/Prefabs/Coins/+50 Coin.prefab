@@ -63,5 +63,10 @@ PrefabInstance:
       propertyPath: Worth
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 114644117796336458, guid: ea3dc4d76d10fc349bae2be4bf1c2e6e,
+        type: 3}
+      propertyPath: onPickUpSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 74c5218ff8f8bff4497c088b1aa51447, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3dc4d76d10fc349bae2be4bf1c2e6e, type: 3}

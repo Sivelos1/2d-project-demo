@@ -13,6 +13,10 @@ public class CoinBehavior : MonoBehaviour
     [Tooltip("Gives the coin gravity, instead of floaing in mid-air.")]
     private bool HasGravity;
 
+    [SerializeField]
+    [Tooltip("The sound played when the coin is picked up.")]
+    private AudioClip onPickUpSound;
+
     private Rigidbody2D physics;
 
     private AudioSource sound;
@@ -41,6 +45,7 @@ public class CoinBehavior : MonoBehaviour
             physics.gravityScale = 1;
         }
         sound = GetComponent<AudioSource>();
+        sound.clip = onPickUpSound;
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)
