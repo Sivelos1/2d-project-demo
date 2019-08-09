@@ -80,7 +80,7 @@ public class Transfer : MonoBehaviour {
                 Debug.Log("This transfer cannot be used more than once.");
                 return;
             }
-            if(InputToOpen != "Horizontal" || InputToOpen != "Vertical")
+            if(InputToOpen != "Horizontal" && InputToOpen != "Vertical")
             {
                 if (Input.GetButtonDown(InputToOpen))
                 {
@@ -92,7 +92,7 @@ public class Transfer : MonoBehaviour {
             }
             else
             {
-                if (Input.GetAxis(InputToOpen) > 0)
+                if (Input.GetAxis(InputToOpen) != 0)
                 {
                     animator.SetBool("Open", true);
                     ActivateTransfer();
