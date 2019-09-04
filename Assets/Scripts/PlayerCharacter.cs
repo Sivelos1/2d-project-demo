@@ -76,6 +76,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private bool Dying = false;
 
+    private float deathTimer = 0;
+
     private bool trueDeath = false;
 
     private Transfer targetDoor;
@@ -83,6 +85,10 @@ public class PlayerCharacter : MonoBehaviour
     private bool EnteringDoor;
 
     private AudioSource sound;
+
+    [SerializeField]
+    [Tooltip("If the player is stuck in their death animation for X seconds, the animation is forced to proceed to its next stage.")]
+    private float forceDeath = 5;
 
     [SerializeField]
     private AudioClip jumpSound, deathSound, hurtSound;
@@ -265,6 +271,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (Dying == false)
         {
+            deathTimer = 0;
             sound.clip = deathSound;
             sound.Play();
             rigidBody2DInstance.AddForce(new Vector2(-rigidBody2DInstance.velocity.x, -rigidBody2DInstance.velocity.y), ForceMode2D.Impulse);
@@ -285,9 +292,15 @@ public class PlayerCharacter : MonoBehaviour
         }
         else
         {
+            deathTimer += Time.deltaTime;
+            if (deathTimer > 5)
+            {
+                isOnGround = true;
+                groundDetectTrigger.enabled = false;
+                animator.SetBool("TouchingGround", true);
+            }
             if (isOnGround == true)
             {
-
                 respawnTimer += Time.deltaTime;
                 if (isOnGround && respawnTimer >= RespawnDelay)
                 {
@@ -345,6 +358,9 @@ public class PlayerCharacter : MonoBehaviour
         }
         else
         {
+            groundDetectTrigger.enabled = true;
+            deathTimer = 0;
+            animator.SetBool("Dead", false);
             rigidBody2DInstance.velocity = Vector2.zero;
             transform.position = currentCheckPoint.transform.position;
             SyncUpAnimations();
